@@ -46,7 +46,7 @@ public class BoardController {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
         int boardNo = Integer.parseInt(String.valueOf(map.get("boardNo")));
         int delCnt = boardService.delBoardNo(boardNo);
-//        System.out.println("delCnt는 " + delCnt);
+        System.out.println("delCnt는 " + delCnt);
         resultMap.put("result", "success");
         resultMap.put("affected", delCnt);
         

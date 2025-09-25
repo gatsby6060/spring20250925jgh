@@ -90,7 +90,7 @@
                         if (data.result === 'success') {
                             self.fnBoaList();
                         } else {
-                            alert(data.message || '삭제 실패');
+                            alert(data || '삭제 실패');
                         }
                     }
                 });
