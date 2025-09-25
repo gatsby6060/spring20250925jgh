@@ -28,7 +28,6 @@
 		<div>
 			<input v-model="keyword" placeholder="검색어" >	
 			<button @click="fnInfo">검색</button>
-            <button @click="fnDel">삭제</button>
 		</div>
 		
         <div>
@@ -38,12 +37,14 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>조회수</th>
+                    <th>삭제</th>
                 </tr>
                 <tr v-for="item in list">
                     <td>{{item.boardNo}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.userId}}</td>
                     <td>{{item.cnt}}</td>
+                    <td><button @click="fnDel(item.boardNo)">삭제</button></td>
                 </tr>
             </table>
         </div>
@@ -77,18 +78,20 @@
                     }
                 });
             },
-            fnDel: function () {
+            fnDel: function (boardNo) {
                 let self = this;
-                let param = {};
+                let param = { boardNo: boardNo };
                 $.ajax({
                     url: "board-del.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        console.log("보드 리스트 뭐 어쩃든 성공~~~~~");
-                        console.log(data);
-                        self.list = data.list;
+                        if (data.result === 'success') {
+                            self.fnBoaList();
+                        } else {
+                            alert(data.message || '삭제 실패');
+                        }
                     }
                 });
             }

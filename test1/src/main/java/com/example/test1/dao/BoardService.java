@@ -37,15 +37,10 @@ public class BoardService {
 		return resultMap;
 	}
 	
-//	public int delBoardNo(int boardNo) {
-//		// TODO Auto-generated method stub
-//
-//		int delno = boaMapper.boaDel(boardNo);
-//		System.out.println("delno는 "+delno);
-//
-//		
-//		return delno;
-//	}
+	public int delBoardNo(int boardNo) {
+		int deleted = boaMapper.boaDel(boardNo);
+		return deleted;
+	}
 	
 	
 }
