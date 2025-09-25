@@ -15,16 +15,16 @@ import com.example.test1.model.Student;
 @Service
 public class BoardService {
 
-    private final BoardController boardController;
+//    private final BoardController boardController;
 	
 	@Autowired
 	BoaMapper boaMapper;
 
 
-    BoardService(BoardController boardController) {
-        this.boardController = boardController;
-    }
-	
+//    BoardService(BoardController boardController) {
+//        this.boardController = boardController;
+//    }
+//	
 	
 	public HashMap<String, Object> getBoardList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -37,16 +37,15 @@ public class BoardService {
 		return resultMap;
 	}
 	
-	public int delBoardNo(int boardNo) {
-		// TODO Auto-generated method stub
-//		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		int delno = boaMapper.boaDel(boardNo);
-		System.out.println("delno는 "+delno);
-//		resultMap.put("list", list);
-//		resultMap.put("result", "success");
-		
-		return delno;
-	}
+//	public int delBoardNo(int boardNo) {
+//		// TODO Auto-generated method stub
+//
+//		int delno = boaMapper.boaDel(boardNo);
+//		System.out.println("delno는 "+delno);
+//
+//		
+//		return delno;
+//	}
 	
 	
 }

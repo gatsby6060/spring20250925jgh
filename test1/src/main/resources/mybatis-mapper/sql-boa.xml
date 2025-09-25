@@ -9,12 +9,13 @@
 		FROM TBL_BOARD
 	</select>
 	
+	<!--
 	<delete id="boaDel" parameterType="int" resultType="int">
 		delete 
 		FROM BOARD 
 		WHERE BOARDNO = #{keyword}
 	</delete>
-	
+	-->
 </mapper>
 
 
