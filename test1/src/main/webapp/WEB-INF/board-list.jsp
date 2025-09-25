@@ -24,27 +24,26 @@
 </head>
 <body>
     <div id="app">
-        <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+                <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 		<div>
 			<input v-model="keyword" placeholder="검색어" >	
 			<button @click="fnInfo">검색</button>
+            <button @click="fnDel">삭제</button>
 		</div>
-		<!--검색버튼을 클릭하면 stu-list.dox를 호출하고 콘솔창에 {keyword:"입력한값"} 출력하기-->
+		
         <div>
             <table>
                 <tr>
-                    <th>학번</th>
-                    <th>이름</th>
-                    <th>학과</th>
-                    <th>학년</th>
-                    <th>성별</th>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>조회수</th>
                 </tr>
                 <tr v-for="item in list">
-                    <td>{{item.stuNo}}</td>
-                    <td>{{item.stuName}}</td>
-                    <td>{{item.stuDept}}</td>
-                    <td>{{item.stuGrade}}</td>
-                    <td>{{item.stuGender}}</td>
+                    <td>{{item.boardNo}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.userId}}</td>
+                    <td>{{item.cnt}}</td>
                 </tr>
             </table>
         </div>
@@ -52,62 +51,52 @@
 </body>
 </html>
 
-
 <script>
     const app = Vue.createApp({
         data() {
             return {
                 // 변수 - (key : value)
-				keyword : "",
+                keyword : "",
                 list : ""
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-
-            fnList: function () {
+            fnBoaList: function () {
                 let self = this;
-                let param = {
-				};
+                let param = {};
                 $.ajax({
-                    url: "stu-list.dox",
+                    url: "board-list.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-						console.log("학생 리스트 뭐 어쩃든 성공~~~~~")
-						console.log(data);
+                        console.log("보드 리스트 뭐 어쩃든 성공~~~~~");
+                        console.log(data);
                         self.list = data.list;
                     }
                 });
             },
-
-            fnInfo: function () {
+            fnDel: function () {
                 let self = this;
-                let param = {
-					keyword : self.keyword,
-				};
+                let param = {};
                 $.ajax({
-                    url: "stu-info.dox",
+                    url: "board-del.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-						console.log(data);
+                        console.log("보드 리스트 뭐 어쩃든 성공~~~~~");
+                        console.log(data);
+                        self.list = data.list;
                     }
                 });
-            },
-			
-			fnLogin: function () {
-			//아무것도 없음          
-			}
-			
-			
+            }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
-            self.fnList();
+            self.fnBoaList();
         }
     });
 

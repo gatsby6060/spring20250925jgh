@@ -42,6 +42,7 @@
                     pwd: pwd
                 },
                 success: function(data) {
+					
                     console.log(data);
                     if (data.result === "success") {
                         // 로그인 성공 시 페이지 전환

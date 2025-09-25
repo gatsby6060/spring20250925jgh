@@ -33,7 +33,7 @@ public class UserController {
 		System.out.println(map);
 		resultMap = userService.userLogin(map);
 		
-		return new Gson().toJson(resultMap);
+		return new Gson().toJson(resultMap); // [{},{}]
 	}
 	
 }
