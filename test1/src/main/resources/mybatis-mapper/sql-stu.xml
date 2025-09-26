@@ -19,6 +19,16 @@
 		DELETE FROM STUDENT
 		WHERE STU_NO = #{stuNo}
 	</delete>
+	
+	
+	<select id="selectStu" parameterType="hashmap" resultType="com.example.test1.model.Student">
+		SELECT s.stu_no, s.stu_name, s.stu_dept, AVG(e.ENR_GRADE) as avgGrade
+		from student s
+		INNER JOIN enrol e ON s.STU_NO = e.STU_NO
+		WHERE s.STU_NO = #{stuNo}
+        group by s.stu_no, s.stu_name, s.stu_dept
+	</select>
+	
 </mapper>
 
 

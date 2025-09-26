@@ -10,6 +10,8 @@ public class Board {
 	private String cnt;
 	private String favorite;
 	private String kind;
+	private String cdate;
+	
 	
 	public String getBoardNo() {
 		return boardNo;
@@ -52,6 +54,12 @@ public class Board {
 	}
 	public void setKind(String kind) {
 		this.kind = kind;
+	}
+	public String getCdate() {
+		return cdate;
+	}
+	public void setCdate(String cdate) {
+		this.cdate = cdate;
 	}
 	
 

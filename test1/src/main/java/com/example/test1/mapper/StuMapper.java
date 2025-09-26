@@ -16,4 +16,6 @@ public interface StuMapper {
 	//학생삭제
 	int deleteStudent(HashMap<String, Object> map);
 	
+	Student selectStu(HashMap<String, Object> map);
+	
 }

@@ -2,6 +2,8 @@ package com.example.test1.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +28,26 @@ public class StuController {
 	
 	@RequestMapping("/stu-list.do") 
     public String login(Model model) throws Exception{
-
+		
         return "/stu-list";
     }
+	
+	
+	
+	@RequestMapping("/stu-view.do") 
+    public String stuview(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+//		System.out.println("stu컨트롤러 stu-view.do진입");
+		System.out.println("여긴 stu-view.do 임 stuNo는 "+map.get("stuNo"));
+		request.setAttribute("stuNo", map.get("stuNo"));
+        return "/stu-view";
+    }
+	
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping(value = "/stu-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -61,6 +80,21 @@ public class StuController {
         return new Gson().toJson(resultMap);
     }
 	
+    
+	@RequestMapping(value = "/stu-view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String stuView(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("stu-view.dox임 들어온 map은 "+ map); //프론트에서 보내줘야 받을수 있음
+		resultMap = stuService.getStudent(map);
+		System.out.println("stu-view.dox임 resultMap은 " + resultMap.toString());
+		
+		return new Gson().toJson(resultMap);
+	}
+    
+    
+    
+    
 	
 	
 }
