@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.test1.controller.BoardController;
-import com.example.test1.mapper.BoaMapper;
+import com.example.test1.mapper.BoardMapper;
 import com.example.test1.mapper.StuMapper;
 import com.example.test1.model.Board;
 import com.example.test1.model.Student;
@@ -15,21 +15,13 @@ import com.example.test1.model.Student;
 @Service
 public class BoardService {
 
-//    private final BoardController boardController;
-	
 	@Autowired
-	BoaMapper boaMapper;
-
-
-//    BoardService(BoardController boardController) {
-//        this.boardController = boardController;
-//    }
-//	
+	BoardMapper boardMapper;
 	
 	public HashMap<String, Object> getBoardList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		List<Board> list = boaMapper.boaList(map);
+		List<Board> list = boardMapper.selectBoardList(map);
 
 		resultMap.put("list", list);
 		resultMap.put("result", "success");
@@ -38,7 +30,7 @@ public class BoardService {
 	}
 	
 	public int delBoardNo(int boardNo) {
-		int deleted = boaMapper.boaDel(boardNo);
+		int deleted = boardMapper.boaDel(boardNo);
 		return deleted;
 	}
 	

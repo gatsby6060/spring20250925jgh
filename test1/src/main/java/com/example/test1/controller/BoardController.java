@@ -18,9 +18,6 @@ import com.google.gson.Gson;
 
 @Controller
 public class BoardController {
-	// stu-list.do 주소 생성해서 http://localhost:8080/stu-list.do로 접속하면
-	// sut-list.jsp 생성
-	// stu-list.jsp 파일로 연결
 	
 	@Autowired
 	BoardService boardService;
@@ -28,7 +25,7 @@ public class BoardController {
 	@RequestMapping("/board-list.do") 
     public String login(Model model) throws Exception{
 
-        return "/board-list";
+        return "/board-list"; //.jsp빠진형태
     }
 	
 	@RequestMapping(value = "/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
