@@ -9,7 +9,6 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <script src="/js/page-change.js"></script>
         <style>
             table,
             tr,
@@ -36,18 +35,18 @@
             <table>
                 <tr>
                     <th>이름</th>
-                    <td>{{info.stuName}}</td>
+                    <td><input type="text" v-model="info.stuName" /></td>
                 </tr>
                 <tr>
                     <th>학과</th>
-                    <td>{{info.stuDept}}</td>
+                    <td><input type="text" v-model="info.stuDept" /></td>
                 </tr>
                 <tr>
                     <th>전체시험평균점수</th>
-                    <td>{{info.avgGrade}}</textarea></td>
+                    <td>{{info.avgGrade}}</td>
                 </tr>
             </table>
-            <button @click="fnUpate(info.stuNo)">수정</button>
+            <button @click="fnUpatePerfect(info.stuNo)">수정완료적용</button>
         </div>
     </body>
 
@@ -59,7 +58,9 @@
                 return {
                     // 변수 - (key : value)
                     stuNo: "${stuNo}", //request.getAttribute("test")......
-                    info: ""
+                    info: "",
+                    stuName: "",
+                    stuDept:""
                 };
             },
             methods: {
@@ -75,7 +76,6 @@
                         type: "POST",
                         data: param,
                         success: function (data) {
-
                             // alert("특정 1개 게시물이 조회되었습니다");    
                             // console.log(data);
                             // alert(JSON.stringify(data));
@@ -84,11 +84,25 @@
                         }
                     });
                 },
-                fnUpate : function(num){
-                    // alert("수정버튼눌림");
-                    pageChange("stu-update.do", {stuNo : num});
+                fnUpatePerfect: function (stuNo) {
+                    let self = this;
+                    let param = {
+                        stuNo: self.stuNo, 
+                        stuName: self.info.stuName,
+                        stuDept: self.info.stuDept
+                    };
+                    $.ajax({
+                        url: "stu-update.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            alert("수정되었습니다.");
+                            location.href = "stu-list.do";
+                        }
+                    });
                 },
-               
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분

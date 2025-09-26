@@ -18,4 +18,6 @@ public interface StuMapper {
 	
 	Student selectStu(HashMap<String, Object> map);
 	
+	int updateStu(HashMap<String, Object> map);
+	
 }

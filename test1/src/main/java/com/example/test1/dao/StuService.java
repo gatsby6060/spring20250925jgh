@@ -67,6 +67,16 @@ public class StuService {
 		return resultMap;
 	}
 
+	public HashMap<String, Object> updateStudent(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int info = stuMapper.updateStu(map);
+
+		resultMap.put("info", info);
+		resultMap.put("result", "success");
+		
+		return resultMap;
+	}
+
 
 	
 }

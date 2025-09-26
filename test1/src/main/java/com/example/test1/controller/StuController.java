@@ -31,9 +31,7 @@ public class StuController {
 		
         return "/stu-list";
     }
-	
-	
-	
+		
 	@RequestMapping("/stu-view.do") 
     public String stuview(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
 //		System.out.println("stu컨트롤러 stu-view.do진입");
@@ -41,9 +39,14 @@ public class StuController {
 		request.setAttribute("stuNo", map.get("stuNo"));
         return "/stu-view";
     }
-	
-	
-	
+
+	@RequestMapping("/stu-update.do") 
+    public String stuUpdate(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+//		System.out.println("stu컨트롤러 stu-view.do진입");
+		System.out.println("여긴 stu-update.do 임 stuNo는 "+map.get("stuNo"));
+		request.setAttribute("stuNo", map.get("stuNo"));
+        return "/stu-update";
+    }
 	
 	
 	
@@ -92,9 +95,17 @@ public class StuController {
 		return new Gson().toJson(resultMap);
 	}
     
-    
-    
-    
+       
+	@RequestMapping(value = "/stu-update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String stuUpdate(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("stu-update.dox임 들어온 map은 "+ map); //프론트에서 보내줘야 받을수 있음
+		resultMap = stuService.updateStudent(map);
+		System.out.println("stu-update.dox임 resultMap은 " + resultMap.toString());
+		
+		return new Gson().toJson(resultMap);
+	}
 	
 	
 }
