@@ -12,6 +12,7 @@ public interface BoardMapper {
 	// 게시글 목록
 	List<Board> selectBoardList(HashMap<String, Object> map);
 	
-	int boaDel(int boardno);
+	// 게시글 삭제
+	int deleteBoard(HashMap<String, Object> map);
 	
 }

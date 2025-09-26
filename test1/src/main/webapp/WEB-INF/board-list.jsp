@@ -44,7 +44,7 @@
                     <td>{{item.title}}</td>
                     <td>{{item.userId}}</td>
                     <td>{{item.cnt}}</td>
-                    <td><button @click="fnDel(item.boardNo)">삭제</button></td>
+                    <td><button @click="fnRemove(item.boardNo)">삭제</button></td>
                 </tr>
             </table>
         </div>
@@ -63,7 +63,7 @@
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnBoaList: function () {
+            fnList: function () {
                 let self = this;
                 let param = {};
                 $.ajax({
@@ -78,28 +78,29 @@
                     }
                 });
             },
-            fnDel: function (boardNo) {
+            fnRemove: function (boardNo) {
                 let self = this;
-                let param = { boardNo: boardNo };
+                let param = {
+                    boardNo : boardNo
+                };
                 $.ajax({
-                    url: "board-del.dox",
+                    url: "board-delete.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        if (data.result === 'success') {
-                            self.fnBoaList();
-                        } else {
-                            alert(data || '삭제 실패');
-                        }
+                        alert("삭제되었습니다");
+                        self.fnList();
+                        // console.log(data);
+                        // self.list = data.list;
                     }
                 });
-            }
+            },
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
-            self.fnBoaList();
+            self.fnList();
         }
     });
 

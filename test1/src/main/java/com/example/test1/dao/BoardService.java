@@ -29,9 +29,14 @@ public class BoardService {
 		return resultMap;
 	}
 	
-	public int delBoardNo(int boardNo) {
-		int deleted = boardMapper.boaDel(boardNo);
-		return deleted;
+	public HashMap<String, Object> removeBoard(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int cnt = boardMapper.deleteBoard(map);
+
+		resultMap.put("result", "success");
+		
+		return resultMap;
 	}
 	
 	

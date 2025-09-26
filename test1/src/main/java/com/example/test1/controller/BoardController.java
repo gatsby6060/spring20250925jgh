@@ -37,15 +37,13 @@ public class BoardController {
 		return new Gson().toJson(resultMap);
 	}
 	
-    @RequestMapping(value = "/board-del.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/board-delete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String boardDel(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    public String boardDelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        int boardNo = Integer.parseInt(String.valueOf(map.get("boardNo")));
-        int delCnt = boardService.delBoardNo(boardNo);
-        System.out.println("delCnt는 " + delCnt);
-        resultMap.put("result", "success");
-        resultMap.put("affected", delCnt);
+
+        resultMap = boardService.removeBoard(map);
+
         
         return new Gson().toJson(resultMap);
     }

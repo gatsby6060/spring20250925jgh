@@ -51,6 +51,15 @@ public class StuController {
 	}
 	
 	
+    @RequestMapping(value = "/stu-delete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String stuDelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+        resultMap = stuService.removeStudent(map);
+
+        return new Gson().toJson(resultMap);
+    }
 	
 	
 	
