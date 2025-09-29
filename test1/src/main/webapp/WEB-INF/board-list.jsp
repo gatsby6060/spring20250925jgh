@@ -26,6 +26,7 @@
 <body>
     <div id="app">
                 <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+                 {{sessionIdId}}님 환영합니다. 메인페이지입니다!
 		<div>
             <select v-model="kind" @change="fnList">
                 <option value="">:: 전체 ::</option>
@@ -57,7 +58,9 @@
                     <td>{{item.userId}}</td>
                     <td>{{item.cnt}}</td>
                     <td>{{item.cdate}}</td>
-                    <td><button @click="fnRemove(item.boardNo)">삭제</button></td>
+                    <td>
+                        <button v-if="sessionIdId == item.userId || status =='A'" @click="fnRemove(item.boardNo)">삭제</button>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -77,6 +80,8 @@
                 list : [],
                 kind: "",
                 order: "num",
+                sessionIdId : "${sessionId}",
+                status : "${sessionStatus}"
             };
         },
         methods: {
