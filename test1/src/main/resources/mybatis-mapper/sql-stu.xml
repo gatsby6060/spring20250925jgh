@@ -20,13 +20,24 @@
 		WHERE STU_NO = #{stuNo}
 	</delete>
 	
-	
-	<select id="selectStu" parameterType="hashmap" resultType="com.example.test1.model.Student">
-		SELECT s.stu_no, s.stu_name, s.stu_dept, NVL(AVG(e.ENR_GRADE), 0) as avgGrade
+	<!--SELECT s.stu_no, s.stu_name, s.stu_dept, NVL(AVG(e.ENR_GRADE), 0) as
+		avgGrade
 		from student s
 		INNER JOIN enrol e ON s.STU_NO = e.STU_NO
 		WHERE s.STU_NO = #{stuNo}
-        group by s.stu_no, s.stu_name, s.stu_dept
+		group by s.stu_no, s.stu_name, s.stu_dept-->
+	<select id="selectStudent" parameterType="hashmap" resultType="com.example.test1.model.Student">
+		SELECT
+		S.STU_NO, S.STU_NAME, S.STU_DEPT, NVL(AVG(ENR_GRADE), 0) AS ENR_AVG,
+		(SELECT ROUND(AVG(ENR_GRADE), 1) FROM ENROL) AS TOTAL_AVG,
+		TOTAL_AVG2
+		FROM STUDENT S
+		LEFT JOIN ENROL E ON S.STU_NO = E.STU_NO
+		INNER JOIN (
+		SELECT ROUND(AVG(ENR_GRADE), 1) AS TOTAL_AVG2 FROM ENROL
+		) T ON 1=1
+		WHERE s.STU_NO = #{stuNo}
+		GROUP BY S.STU_NO, S.STU_NAME, S.STU_DEPT, TOTAL_AVG2
 	</select>
 	
 

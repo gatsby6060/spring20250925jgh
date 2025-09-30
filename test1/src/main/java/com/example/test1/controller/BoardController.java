@@ -44,7 +44,9 @@ public class BoardController {
 	@ResponseBody
 	public String boardList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
 		resultMap = boardService.getBoardList(map);
+		
 
 		return new Gson().toJson(resultMap);
 	}
@@ -75,9 +77,9 @@ public class BoardController {
 	@ResponseBody
 	public String boardView(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-//		System.out.println("board-view.dox임 들어온 map은 "+ map);
+		System.out.println("board-view.dox임 들어온 map은 "+ map);
 		resultMap = boardService.getBoard(map);
-//		System.out.println("board-view.dox임 resultMap은 " + resultMap.toString());
+		System.out.println("board-view.dox임 화면에 돌려주기 직전의 resultMap은 " + resultMap.toString());
 		return new Gson().toJson(resultMap);
 	}
 

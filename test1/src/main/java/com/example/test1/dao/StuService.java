@@ -56,13 +56,13 @@ public class StuService {
 		return resultMap;
 	}
 
-	public HashMap<String, Object> getStudent(HashMap<String, Object> map) {
+	public HashMap<String, Object> searchStudent(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		Student info = stuMapper.selectStu(map);
+		Student stu = stuMapper.selectStudent(map);
 
-		resultMap.put("info", info);
-		resultMap.put("result", "success");
+		resultMap.put("info", stu);
+//		resultMap.put("result", "success");
 		
 		return resultMap;
 	}

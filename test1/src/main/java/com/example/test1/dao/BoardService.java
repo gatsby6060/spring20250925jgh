@@ -9,6 +9,7 @@ import com.example.test1.controller.BoardController;
 import com.example.test1.mapper.BoardMapper;
 import com.example.test1.mapper.StuMapper;
 import com.example.test1.model.Board;
+import com.example.test1.model.Comment;
 import com.example.test1.model.Student;
 
 
@@ -53,12 +54,24 @@ public class BoardService {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		Board board = boardMapper.selectBoard(map);
-		
+		List<Comment> commentList = boardMapper.selectCommentList(map);
 		resultMap.put("info", board);
+		System.out.println("서비스에서 commentlist에 값 넣기직전");
+		resultMap.put("commentList", commentList);
 		resultMap.put("result", "success");
 		return resultMap;
 	
 	}
+	
+//	public HashMap<String, Object> getCommentCount(HashMap<String, Object> map) {
+//		// TODO Auto-generated method stub
+//		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+//		int cocnt = boardMapper.commentCount(map);
+//		
+//		resultMap.put("cocnt", cocnt);
+//		resultMap.put("result", "success");
+//		return resultMap;
+//	}
 	
 	
 }

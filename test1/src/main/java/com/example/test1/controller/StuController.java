@@ -86,10 +86,10 @@ public class StuController {
     
 	@RequestMapping(value = "/stu-view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String stuView(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String view(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println("stu-view.dox임 들어온 map은 "+ map); //프론트에서 보내줘야 받을수 있음
-		resultMap = stuService.getStudent(map);
+		resultMap = stuService.searchStudent(map);
 		System.out.println("stu-view.dox임 resultMap은 " + resultMap.toString());
 		
 		return new Gson().toJson(resultMap);

@@ -16,7 +16,8 @@ public interface StuMapper {
 	//학생삭제
 	int deleteStudent(HashMap<String, Object> map);
 	
-	Student selectStu(HashMap<String, Object> map);
+	//상세 정보 조회
+	Student selectStudent(HashMap<String, Object> map);
 	
 	int updateStu(HashMap<String, Object> map);
 	

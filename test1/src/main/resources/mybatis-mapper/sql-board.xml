@@ -5,15 +5,35 @@
 <mapper namespace="com.example.test1.mapper.BoardMapper">
 
 	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
-		SELECT
-			B.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD') AS CDATE
+       SELECT
+			B.*, 
+            TO_CHAR(CDATETIME, 'YYYY-MM-DD') AS CDATE, 
+            NVL(CCNT, 0) AS COMMENTCNT
 		FROM TBL_BOARD B
-		WHERE 1=1
+        LEFT JOIN (
+            SELECT BOARDNO, COUNT(*) AS CCNT
+            FROM TBL_COMMENT
+            GROUP BY BOARDNO
+        ) T ON T.BOARDNO = B.BOARDNO
+		WHERE 1=1	
 		<if test = "kind != '' and kind != null">
 			AND KIND = #{kind}
 		</if>
+		<if test = "searchOption == 'all'">
+			AND (TITLE LIKE '%'||#{keyword} ||'%' OR
+			USERID LIKE '%'||#{keyword} || '%'
+		)
+		</if>
+		<if test = "searchOption == 'title'">
+			AND TITLE LIKE '%'||#{keyword} ||'%'
+		</if>
+		<if test = "searchOption == 'id'">
+			AND USERID LIKE '%'||#{keyword} ||'%'
+		</if>
+
+		
 		<if test = "order == 'num' ">
-			ORDER BY BOARDNO ASC
+			ORDER BY B.BOARDNO ASC
 		</if>
 		<if test = "order == 'title' ">
 			ORDER BY TITLE ASC
@@ -33,12 +53,32 @@
 		VALUES (B_SEQ.NEXTVAL, #{title}, #{contents}, #{userId}, 0, 0, 1, SYSDATE, SYSDATE)
 	</insert>
 	
+	<!-- 이건 냅두고-->
 	<select id="selectBoard" parameterType="hashmap" resultType="com.example.test1.model.Board">
-		SELECT * 
-		FROM TBL_BOARD 
-		WHERE BOARDNO = #{boardNo}
+		SELECT B.*
+		FROM TBL_BOARD B
+		WHERE B.BOARDNO = #{boardNo}
 	</select>
 	
+	<!-- 이걸 따로 판들어서 보통 댓글목록이니 2개 가 나올꺼임 리스트로 넘거야할듯 -->
+	<select id="selectCommentList" parameterType="hashmap" resultType="com.example.test1.model.Comment">
+		SELECT C.*, U.NICKNAME
+		FROM TBL_COMMENT C
+		INNER JOIN TBL_USER U ON C.USERID = U.USERID
+		WHERE C.BOARDNO = #{boardNo}
+	</select>
+	
+	
+	
+	<!--이거 안씀-->
+	<select id="searchwhere" parameterType="hashmap">
+		select b.boardno, b.userid, count(b.boardno)
+		from tbl_board b
+		inner JOIN tbl_comment c on b.boardno = c.boardno
+		where b.boardno = #{boardNo}
+		group by b.boardno, b.userid;
+	</select>
+
 
 </mapper>
 

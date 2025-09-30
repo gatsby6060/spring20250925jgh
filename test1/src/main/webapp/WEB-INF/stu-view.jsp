@@ -1,4 +1,4 @@
-7<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                     <th>전체시험평균점수</th>
-                    <td>{{info.avgGrade}}</textarea></td>
+                    <td>{{info.enrAvg}}</textarea></td>
                 </tr>
             </table>
             <button @click="fnUpate(info.stuNo)">수정</button>
@@ -64,7 +64,7 @@
             },
             methods: {
                 // 함수(메소드) - (key : function())
-                fnInfo: function () {
+                fnView: function () {
                     let self = this;
                     let param = { //여기가 호출할때 파라미터 보내는 부분
                         stuNo: self.stuNo
@@ -77,7 +77,7 @@
                         success: function (data) {
 
                             // alert("특정 1개 게시물이 조회되었습니다");    
-                            // console.log(data);
+                            console.log(data);
                             // alert(JSON.stringify(data));
                             self.info = data.info;
 
@@ -93,7 +93,7 @@
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
-                self.fnInfo();
+                self.fnView();
             }
         });
 

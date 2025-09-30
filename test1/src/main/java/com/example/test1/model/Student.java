@@ -6,8 +6,15 @@ public class Student {
 	private String stuDept;
 	private String stuName;
 	private String stuGrade;
+	
 	private String stuGender;
 	private String avgGrade;
+	
+	private String enrAvg;
+	private String totalAvg;
+	
+
+	
 	
 	public String getStuNo() {
 		return stuNo;
@@ -48,6 +55,18 @@ public class Student {
 	
 	
 	
+	public String getEnrAvg() {
+		return enrAvg;
+	}
+	public void setEnrAvg(String enrAvg) {
+		this.enrAvg = enrAvg;
+	}
+	public String getTotalAvg() {
+		return totalAvg;
+	}
+	public void setTotalAvg(String totalAvg) {
+		this.totalAvg = totalAvg;
+	}
 	
 	
 }

@@ -8,7 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
-        table, tr, td, th{
+        #board table,  tr,  td,  th{
             border : 1px solid black;
             border-collapse: collapse;
             padding : 5px 10px;
@@ -24,7 +24,7 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-            <table>
+            <table id="board">
                 <tr>
                     <th>제목</th>
                     <td>{{info.title}}</td>
@@ -37,6 +37,26 @@
                     <th>내용</th>
                     <td>{{info.contents}}</textarea></td>
                 </tr>
+            </table>
+            <!-- <div>--------이하 댓글부분-------</div> -->
+            <hr>
+            <table id = "comment">
+                <tr v-for="item in commentList">
+                    <th>{{item.nickName}}</th>
+                    <td>{{item.contents}}</td>
+                    <td><button>삭제</button></td>
+                    <td><button>수정</button></td>
+                </tr>
+            </table>
+            <hr>
+            <table id = "input">
+                <th>댓글 입력</th>
+                <td>
+                    <textarea cols="40" rows="4"></textarea>
+                </td>
+                <td>
+                    <button>저장</button>
+                </td>
             </table>
     </div>
 </body>
@@ -51,7 +71,8 @@
                 title: "",
                 userId: "",
                 contents: "",
-                info: ""
+                info: "",
+                commentList: [], //중요! for에서...뽑아서 돌리려면...
             };
         },
         methods: {
@@ -67,13 +88,13 @@
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        // alert("특정 1개 게시물이 조회되었습니다");    
-                        // console.log(data);
-                        // alert(JSON.stringify(data));
+                        
+                        // alert(JSON.stringify(data)); //댓글 등록이나 삭제도 시간 나면 ㄱㄱ
+                        console.log(data.commentList); //요런 형식으로 찍어야 잘보임 얼럿창 보단 이게 나은듯
+                        
                         self.info = data.info;
-                        // self.title = data.info.title; 
-                        // self.userId = data.info.userId; 
-                        // self.contents = data.info.contents; 
+                        self.commentList = data.commentList;
+                    
                     }
                 });
             }
