@@ -27,6 +27,10 @@
             tr:nth-child(even) {
                 background-color: azure;
             }
+
+            .phone {
+                width: 40px;
+            }
         </style>
     </head>
 
@@ -34,28 +38,67 @@
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
             <div>
-                <label>아이디 : <input v-model="id"></label>
+                <label>
+                    아이디 :
+                    <!-- checkFlg이 false일 때 입력 가능 -->
+                    <input v-if="!checkFlg" v-model="id" type="text">
+                    <!-- checkFlg이 true일 때 입력 불가 -->
+                    <input v-else v-model="id" type="text" disabled>
+                </label>
                 <button @click="fnCheck">중복체크</button>
             </div>
             <div>
                 <label>비밀번호 : <input type="password" v-model="pwd"></label>
             </div>
             <div>
-                주소 : <input v-model="addr"><button @click="fnAddr">주소검색</button>
+                <label>비밀번호 확인 : <input type="password" v-model="pwd2"></label>
             </div>
             <div>
+                이름 : <input v-model="name">
+            </div>
+            <div>
+                주소 : <input v-model="addr" disabled><button @click="fnAddr">주소검색</button>
+            </div>
+            <div>
+                핸드폰 번호 :
+                <input class="phone" v-model="phone1"> -
+                <input class="phone" v-model="phone2"> -
+                <input class="phone" v-model="phone3">
+            </div>
+            <div v-if="!joinFlg">
                 문자인증 : <input v-model="inputNum" :placeholder="timer">
                 <template v-if="!smsFlg">
                     <button @click="fnSms">인증번호 전송</button>
                 </template>
                 <template v-else>
-                    <button>인증</button>
+                    <button @click="fnSmsAuth">인증</button>
                 </template>
             </div>
+            <div v-else style="color : red;">
+                문자인증이 완료되었습니다.
+            </div>
+
             <div>
+                성별 :
+                <label><input type="radio" v-model="gender" value="M">남자</label>
+                <label><input type="radio" v-model="gender" value="F">여자</label>
+            </div>
+            <div>
+                가입 권한 :
+                <select v-model="status">
+                    <option value="A">관리자</option>
+                    <option value="S">판매자</option>
+                    <option value="C">소비자</option>
+                </select>
+            </div>
+
+            <div>
+                <button @click="fnJoin">회원가입</button>
+            </div>
+            <!-- <div>
                 {{timer}}
                 <button @click="fnTimer">시작!</button>
-            </div>
+            </div> -->
         </div> <!--app끝-->
     </body>
 
@@ -76,10 +119,22 @@
                     // 변수 - (key : value)
                     id: "",
                     pwd: "",
+                    pwd2: "",
+                    name: "",
                     addr: "",
+                    phone1: "",
+                    phone2: "",
+                    phone3: "",
+                    gender: "M",
+                    status: "A",
+
+                    checkFlg: false, //중복체크 여부
                     inputNum: "",
                     smsFlg: "",
-                    timer: 180,
+                    timer: "",
+                    count: 180,  // 3분
+                    joinFlg: false, // 문자인증 유무
+                    ranStr: "", // 문자인증 번호
                 };
             },
             methods: {
@@ -90,6 +145,7 @@
                         id: self.id,
                         // pwd: self.pwd
                     };
+                    if (self.id.length < 4) { alert('아이디는 4자 이상으로 입력하세요.'); return; }
                     $.ajax({
                         url: "/member/check.dox",
                         dataType: "json",
@@ -100,6 +156,7 @@
                                 alert("이미 사용중인 아이디입니다");
                             } else {
                                 alert("사용 가능한 아이디입니다.");
+                                self.checkFlg = true;
                             }
                             // alert(data.msg);
                             // alert(data.result);
@@ -130,6 +187,7 @@
                             console.log(data);
                             if (data.res.statusCode == "2000") {
                                 alert("문자전송완료");
+                                self.ranStr = data.ranStr;
                                 self.smsFlg = true;
                                 self.fnTimer();
                             } else {
@@ -141,19 +199,124 @@
 
                 fnTimer: function () {
                     let self = this;
-                    let interval = setInterval(function(){
-                        if(self.timer == 0){
+                    let interval = setInterval(function () {
+                        if (self.count == 0) {
                             clearInterval(interval);
                             alert("시간이 만료되었습니다!");
-                        } else{
-                            self.timer--;
+                        } else {
+                            let min = parseInt(self.count / 60);
+                            let sec = self.count % 60;
+
+                            min = min < 10 ? "0" + min : min;
+                            sec = sec < 10 ? "0" + sec : sec;
+
+                            self.timer = min + " : " + sec;
+                            self.count--;
                         }
-                       
-                    //돌아갈 함수
-                    }, 1000); //1초에한번 //돌아갈 시간
+
+                    }, 1000);
+                },
+
+
+
+                fnJoin: function () {
+                    let self = this;
+                    if (!self.checkFlg) {
+                        alert("아이디 중복체크 확인 후 진행해주세요");
+                        return;
+                    }
+
+                    if (self.id.length < 5) {
+                        alert("아이디는 5글자 이상이어야합니다.");
+                        return;
+                    }
+
+                    //비밀번호는 6글자이상
+                    if (self.pwd.length < 6 || self.pwd2.length < 6) {
+                        alert("비밀번호는 6글자 이상으로 해야합니다.");
+                        return;
+                    }
+
+                    //비밀번호 일치확인
+                    if (self.pwd != self.pwd2) {
+                        alert("비밀번호가 일치 하지 않습니다.");
+                        return;
+                    }
+
+
+
+                    //이름 빈값X
+                    if (self.name == "") {
+                        alert("이름은 빈값입력이 안됩니다.");
+                        return;
+                    }
+                    //주소는 빈값X
+                    if (self.addr == "") {
+                        alert("주소도 빈값입력이 안됩니다.");
+                        return;
+                    }
+
+                    //핸드폰 번호는 000-0000-0000 형태로 저장
+                    if (self.phone1 == "" || self.phone2 == "" || self.phone3 == "") {
+                        alert("휴대폰 번호도 빈값이 있으면 안됩니다. 입력해주세요")
+                        return;
+                    }
+
+
+                    //문자인증이 완료되지 않으면
+                    // 회워가입 불가능(안내문구 출력)
+                    if (!self.joinFlg) {
+                        alert("문자 인증을 진행해주세요");
+                        return;
+                    }
+
+
+                    alert("서버 보내기 직전1");
+                    let param = {
+
+                        id: self.id,
+                        pwd: self.pwd,
+                        name: self.name,
+                        addr: self.addr,
+                        phone: self.phone1 + "-" + self.phone2 + "-" + self.phone3,
+                        // phone: `${self.phone1}-${self.phone2}-${self.phone3}`,
+                        gender: self.gender,
+                        status: self.status,
+
+                    };
+                    alert("서버 보내기 직전2");
+                    $.ajax({
+                        url: "/member/add.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            if (data.result == "success") {
+                                alert("가입되었습니다.");
+                                location.href = "/member/login.do";
+                            } else {
+                                alert("오류가 발생했습니다.");
+                            }
+
+                        }
+                    });
+
+                },
+
+
+
+
+                fnSmsAuth: function () {
+                    let self = this;
+                    if (self.ranStr == self.inputNum) {
+                        alert("문자인증이 완료되었습니다.");
+                        self.joinFlg = true;
+                    } else {
+                        alert("문자인증에 실패했습니다.");
+                    }
                 }
 
-            }, // methods
+            }, // methods                
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;

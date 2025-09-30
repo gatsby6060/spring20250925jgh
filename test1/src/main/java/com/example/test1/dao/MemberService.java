@@ -70,4 +70,23 @@ public class MemberService {
 		
 		return null;
 	}
+
+
+	public HashMap<String, Object> memberInsert(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		int cnt = memberMapper.memberAdd(map); // 아이디 패스워드가 map안에 담겨있을꺼임
+		
+		if(cnt<1) {
+			resultMap.put("result", "fail");
+		} else {
+			resultMap.put("result", "success");
+		}
+		
+//		resultMap.put("msg", message);
+//		resultMap.put("result", result);
+		
+		return resultMap;
+	}
 }
