@@ -226,6 +226,15 @@
                         return;
                     }
 
+                    //영문 대문자 또는 소문자로 시작하는 아이디, 길이는 4 ~ 10자         /^[A-Za-z]{4, 20}/
+                    let idtest = /^[A-Za-z0-9]{5,10}$/.test(self.id);
+                    if (!idtest) {//value가 입력한 값을 의미한다
+                        alert('아이디는 숫자포함 총5~10글자만 허용됩니다.');
+                        userid.focus();
+                        return false
+                    }
+                
+
                     if (self.id.length < 5) {
                         alert("아이디는 5글자 이상이어야합니다.");
                         return;
@@ -243,13 +252,25 @@
                         return;
                     }
 
-
+                    let reg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,25}$/.test(self.pwd)
+                    if (!reg) {
+                        alert("비밀번호는 6자 이상, 숫자/문자 혼합을 권장합니다.");
+                        return;
+                    }
 
                     //이름 빈값X
                     if (self.name == "") {
                         alert("이름은 빈값입력이 안됩니다.");
                         return;
                     }
+
+                    //이름정규식
+                    let nameJ = /^[가-힣]{2,8}$/.test(self.name)
+                    if (!nameJ) {
+                        alert("한글은 문자만 최소2글자부터 최대8글자까지입니다.");
+                        return;
+                    }
+
                     //주소는 빈값X
                     if (self.addr == "") {
                         alert("주소도 빈값입력이 안됩니다.");
@@ -262,13 +283,20 @@
                         return;
                     }
 
+                    // let phonenumber = (self.phone1 + "-" + self.phone2 + "-" + self.phone3)
+                    // let phonej = /^01(0|1|2|6|7|8|9|?)?([0-9]{3,4})?([0-9]{4})$/.test(phonenumber);
+                    // if(!phonej){
+                    //     alert("휴대폰 번호를 일반적 형식에 맞게 제대로 입력해주세요");
+                    //     return;
+                    // }
 
-                    //문자인증이 완료되지 않으면
+                    // 문자인증이 완료되지 않으면
                     // 회워가입 불가능(안내문구 출력)
-                    if (!self.joinFlg) {
-                        alert("문자 인증을 진행해주세요");
-                        return;
-                    }
+                    // 잠시 주석처리 250930
+                    // if (!self.joinFlg) {
+                    //     alert("문자 인증을 진행해주세요");
+                    //     return;
+                    // }
 
 
                     alert("서버 보내기 직전1");
