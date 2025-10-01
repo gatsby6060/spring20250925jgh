@@ -53,6 +53,7 @@
                 </select>
 
                 <select v-model="order" @change="fnList">
+                    <option value="time">:: 시간순 ::</option>
                     <option value="num">:: 번호순 ::</option>
                     <option value="title">:: 제목순 ::</option>
                     <option value="cnt">:: 조회수 ::</option>
@@ -78,6 +79,10 @@
                         <td>{{item.userId}}</td>
                         <td>{{item.cnt}}</td>
                         <td>{{item.cdate}}</td>
+                        <!-- <td v-if="">{{item.time}}</td> -->
+                        <!-- <td else>{{item.cdate}}</td> -->
+                        
+
                         <td>
                             <button v-if="sessionIdId == item.userId || status =='A'"
                                 @click="fnRemove(item.boardNo)">삭제</button>
@@ -101,7 +106,7 @@
                     // keyword : "",
                     list: [],
                     kind: "",
-                    order: "num",
+                    order: "time",
                     keyword: "", //검색어
                     searchOption : "all", // 검색옵션 (기본: 전체)
                     

@@ -28,4 +28,10 @@ public interface BoardMapper {
 	//게시글마다의 댓글개수
 //	int commentCount(HashMap<String, Object> map);
 	
+	//댓글 등록
+	int insertComment(HashMap<String, Object> map);
+	
+	//게시글 조회수 증가 +1
+	int updateCnt(HashMap<String, Object> map);
+	
 }

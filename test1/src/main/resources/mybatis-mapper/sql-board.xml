@@ -7,7 +7,7 @@
 	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
        SELECT
 			B.*, 
-            TO_CHAR(CDATETIME, 'YYYY-MM-DD') AS CDATE, 
+            DECODE( TO_CHAR(CDATETIME, 'YYYY-MM-DD'), TO_CHAR(SYSDATE, 'YYYY-MM-DD'), TO_CHAR(CDATETIME,'HH24:MI:SS') , TO_CHAR(CDATETIME, 'YYYY-MM-DD') )  AS CDATE,
             NVL(CCNT, 0) AS COMMENTCNT
 		FROM TBL_BOARD B
         LEFT JOIN (
@@ -31,7 +31,9 @@
 			AND USERID LIKE '%'||#{keyword} ||'%'
 		</if>
 
-		
+		<if test = "order == 'time' ">
+			ORDER BY B.CDATETIME DESC
+		</if>
 		<if test = "order == 'num' ">
 			ORDER BY B.BOARDNO ASC
 		</if>
@@ -41,6 +43,7 @@
 		<if test = "order == 'cnt' ">
 			ORDER BY CNT DESC
 		</if>
+
 	</select>
 	
 	<delete id="deleteBoard" parameterType="hashmap"  >
@@ -66,19 +69,22 @@
 		FROM TBL_COMMENT C
 		INNER JOIN TBL_USER U ON C.USERID = U.USERID
 		WHERE C.BOARDNO = #{boardNo}
+		ORDER BY C.CDATETIME ASC
 	</select>
 	
-	
-	
-	<!--이거 안씀-->
-	<select id="searchwhere" parameterType="hashmap">
-		select b.boardno, b.userid, count(b.boardno)
-		from tbl_board b
-		inner JOIN tbl_comment c on b.boardno = c.boardno
-		where b.boardno = #{boardNo}
-		group by b.boardno, b.userid;
-	</select>
 
+	<insert id="insertComment" parameterType="hashmap">
+		INSERT INTO TBL_COMMENT
+		VALUES(COMMENT_SEQ.NEXTVAL,#{boardNo},#{contents},#{id},0, NULL, SYSDATE, SYSDATE)	
+	</insert>
+
+
+	<update id="updateCnt" parameterType="hashmap" >
+		UPDATE tbl_board 
+		SET 
+			CNt = CNT+1 
+		WHERE BOARDNO = #{boardNo}
+	</update>
 
 </mapper>
 

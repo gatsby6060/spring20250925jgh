@@ -13,6 +13,7 @@ public class Board {
 	private String cdate;
 	private String commentCnt;
 //	private String commentcontents;
+	private String time;
 	
 	
 	public String getBoardNo() {
@@ -68,6 +69,12 @@ public class Board {
 	}
 	public void setCommentCnt(String commentCnt) {
 		this.commentCnt = commentCnt;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 	

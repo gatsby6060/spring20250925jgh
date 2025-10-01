@@ -82,5 +82,17 @@ public class BoardController {
 		System.out.println("board-view.dox임 화면에 돌려주기 직전의 resultMap은 " + resultMap.toString());
 		return new Gson().toJson(resultMap);
 	}
+	
+	
+	
+	@RequestMapping(value = "/comment/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String commentAdd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap = boardService.addComment(map);
+	
+		return new Gson().toJson(resultMap);
+	}
 
 }

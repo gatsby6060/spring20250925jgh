@@ -24,6 +24,7 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+         {{sessionId}}님 환영합니다. 상세 보기 페이지입니다!
             <table id="board">
                 <tr>
                     <th>제목</th>
@@ -32,6 +33,10 @@
                 <tr>
                     <th>작성자</th>
                     <td>{{info.userId}}</td>
+                </tr>
+                <tr>
+                    <th>조회수</th>
+                    <td>{{info.cnt}}</td>
                 </tr>
                 <tr>
                     <th>내용</th>
@@ -52,10 +57,10 @@
             <table id = "input">
                 <th>댓글 입력</th>
                 <td>
-                    <textarea cols="40" rows="4"></textarea>
+                    <textarea cols="40" rows="4" v-model="contents"></textarea>
                 </td>
                 <td>
-                    <button>저장</button>
+                    <button @click="fnCommentAdd">저장</button>
                 </td>
             </table>
     </div>
@@ -70,9 +75,11 @@
                 boardNo : "${boardNo}", //request.getAttribute("test")......
                 title: "",
                 userId: "",
-                contents: "",
+                // contents: "",//
                 info: "",
                 commentList: [], //중요! for에서...뽑아서 돌리려면...
+                sessionId: "${sessionId}",
+                contents : ""///
             };
         },
         methods: {
@@ -97,7 +104,26 @@
                     
                     }
                 });
-            }
+            },
+            fnCommentAdd: function () {
+                let self = this;
+                let param = { 
+                    boardNo : self.boardNo,
+                    id : self.sessionId,
+                    contents : self.contents,
+                };
+                $.ajax({
+                    url: "/comment/add.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        alert(data.msg);
+                        self.contents = "";
+                        self.fnInfo();
+                    }
+                });
+            },
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
