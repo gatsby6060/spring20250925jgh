@@ -24,10 +24,15 @@ public class BoardService {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		List<Board> list = boardMapper.selectBoardList(map);
-		System.out.println("프론트에 돌려주기전 list에 머가 들었나~?" + list);
+		int cnt = boardMapper.selectBoardCnt(map);
+		
+		
 		resultMap.put("list", list);
+		resultMap.put("cnt", cnt);
 		resultMap.put("result", "success");
-
+		
+		System.out.println("프론트에 돌려주기전 resultMap에 머가 들었나~?" + resultMap);
+		
 		return resultMap;
 	}
 

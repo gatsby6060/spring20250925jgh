@@ -43,8 +43,35 @@
 		<if test = "order == 'cnt' ">
 			ORDER BY CNT DESC
 		</if>
+		OFFSET #{page} ROW FETCH NEXT #{pageSize} ROWS ONLY
 
 	</select>
+	
+	
+	<select id="selectBoardCnt" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*)
+		FROM TBL_BOARD B
+		WHERE 1=1	
+		<if test = "kind != '' and kind != null">
+			AND KIND = #{kind}
+		</if>
+		<if test = "searchOption == 'all'">
+			AND (TITLE LIKE '%'||#{keyword} ||'%' OR
+			USERID LIKE '%'||#{keyword} || '%'
+		)
+		</if>
+		<if test = "searchOption == 'title'">
+			AND TITLE LIKE '%'||#{keyword} ||'%'
+		</if>
+		<if test = "searchOption == 'id'">
+			AND USERID LIKE '%'||#{keyword} ||'%'
+		</if>
+
+
+	</select>
+	
+	
+	
 	
 	<delete id="deleteBoard" parameterType="hashmap"  >
 		DELETE FROM TBL_BOARD
