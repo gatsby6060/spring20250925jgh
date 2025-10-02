@@ -47,5 +47,25 @@ public class AreaController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	@RequestMapping(value = "/area/gu.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+		public String gu(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("/area/gu.dox 호출됨 들어온 map은 " + map);
+		resultMap = areaService.getGuList(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	@RequestMapping(value = "/area/dong.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+		public String dong(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("/area/dong.dox 호출됨 들어온 map은 " + map);
+		resultMap = areaService.getDongList(map);
+		System.out.println("resultMap은 " + resultMap);
+		return new Gson().toJson(resultMap);
+	}
+	
 
 }

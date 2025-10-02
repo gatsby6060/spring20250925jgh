@@ -1,6 +1,7 @@
 package com.example.test1.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.test1.dao.StuService;
 import com.example.test1.dao.UserService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 
@@ -103,6 +106,25 @@ public class StuController {
 		System.out.println("stu-update.dox임 들어온 map은 "+ map); //프론트에서 보내줘야 받을수 있음
 		resultMap = stuService.updateStudent(map);
 		System.out.println("stu-update.dox임 resultMap은 " + resultMap.toString());
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	@RequestMapping(value = "/stu/deleteList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String deleteList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		System.out.println("/stu/deleteList.dox임 들어온 map은 "+ map); //프론트에서 보내줘야 받을수 있음
+
+		String json = map.get("selectItem").toString(); 
+		ObjectMapper mapper = new ObjectMapper();
+		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		map.put("list", list);	
+		
+		
+		resultMap = stuService.removeStudentList(map);
+		System.out.println("/stu/deleteList.dox임 프론트로 되돌려주기 직전 " + resultMap);
 		
 		return new Gson().toJson(resultMap);
 	}

@@ -81,6 +81,7 @@ public class MemberService {
 		if(cnt<1) {
 			resultMap.put("result", "fail");
 		} else {
+			resultMap.put("userId", map.get("userId"));
 			resultMap.put("result", "success");
 		}
 		
@@ -88,5 +89,11 @@ public class MemberService {
 //		resultMap.put("result", result);
 		
 		return resultMap;
+	}
+
+
+	public void addMemberImg(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		int cnt = memberMapper.insertMemberImg(map);
 	}
 }

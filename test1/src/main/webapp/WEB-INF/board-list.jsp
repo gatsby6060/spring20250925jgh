@@ -33,8 +33,9 @@
                 margin-right: 5px;
                 text-decoration: none;
             }
-            .active{
-                color : black;
+
+            .active {
+                color: black;
                 font-weight: bold;
             }
         </style>
@@ -46,9 +47,9 @@
             {{sessionIdId}}님 환영합니다. 메인페이지입니다!
             <div>
                 <select v-model="searchOption">
-                    <option value = "all">:: 전체 ::</option>
-                    <option value = "title">:: 제목 ::</option>
-                    <option value = "id">:: 작성자 ::</option>
+                    <option value="all">:: 전체 ::</option>
+                    <option value="title">:: 제목 ::</option>
+                    <option value="id">:: 작성자 ::</option>
                 </select>
                 <input v-model="keyword">
                 <button @click="fnList">검색</button>
@@ -78,6 +79,7 @@
             <div>
                 <table>
                     <tr>
+                        <th><input type="checkbox" @click="fnAllCheck()"></th>
                         <th>번호</th>
                         <th>제목</th>
                         <th>작성자</th>
@@ -85,7 +87,10 @@
                         <th>작성일</th>
                         <th>삭제</th>
                     </tr>
-                    <tr v-for="item in list">
+                    <tr v-for="(item, index) in list">
+                        <td>{{index}}
+                            <input type="checkbox" :value="item.boardNo" v-model="selectItem">
+                        </td>
                         <td>{{item.boardNo}}</td>
                         <td>
                             <a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a>
@@ -96,7 +101,7 @@
                         <td>{{item.cdate}}</td>
                         <!-- <td v-if="">{{item.time}}</td> -->
                         <!-- <td else>{{item.cdate}}</td> -->
-                        
+
 
                         <td>
                             <button v-if="sessionIdId == item.userId || status =='A'"
@@ -106,17 +111,20 @@
                 </table>
                 <div>
                     <a v-if="page!=1" @click="fnMove(-1)" href="javascript:;">←</a>
-                    <a v-if="page>=2" href ="javascript:;" @click="fnPage(page-1)">◀</a>
+                    <a v-if="page>=2" href="javascript:;" @click="fnPage(page-1)">◀</a>
                     <a else></a>
-                    <a @click="fnPage(num)" id = "index" href ="javascript:;" v-for= "num in index" >
-                        <span :class="{active : page == num}">{{num}}</span>     
-                   <!-- <span v-if="num==page" class="active">{{num}}</span>
+                    <a @click="fnPage(num)" id="index" href="javascript:;" v-for="num in index">
+                        <span :class="{active : page == num}">{{num}}</span>
+                        <!-- <span v-if="num==page" class="active">{{num}}</span>
                         <span v-else>{{num}}</span> -->
                     </a>
-                    <a v-if="page!=index" href ="javascript:;" @click="fnPage(page+1)">▶</a>
+                    <a v-if="page!=index" href="javascript:;" @click="fnPage(page+1)">▶</a>
                     <a v-else></a>
-                     <a v-if="page!=index" @click="fnMove(1)" href="javascript:;">→</a>
+                    <a v-if="page!=index" @click="fnMove(1)" href="javascript:;">→</a>
                 </div>
+            </div>
+            <div>
+                <button @click="fnAllRemove">삭제</button>
             </div>
             <div>
                 <a href="board-add.do"><button>글쓰기</button></a>
@@ -136,15 +144,20 @@
                     kind: "",
                     order: "time",
                     keyword: "", //검색어
-                    searchOption : "all", // 검색옵션 (기본: 전체)
+                    searchOption: "all", // 검색옵션 (기본: 전체)
 
-                    pageSize : 5, // 한페이지에 출력할 개수
-                    page : 1, //현재페이지
-                    index : 0, // 최대 페이지 값
-                    
+                    pageSize: 5, // 한페이지에 출력할 개수
+                    page: 1, //현재페이지
+                    index: 0, // 최대 페이지 값
+
                     sessionIdId: "${sessionId}",
                     status: "${sessionStatus}",
-                    
+
+                    selectItem: [],
+
+                    //전체체크해제용 전체체크용 플래그
+                    selectFlg: false,
+
                 };
             },
             methods: {
@@ -155,10 +168,10 @@
                         kind: self.kind,
                         order: self.order,
                         keyword: self.keyword,
-                        searchOption : self.searchOption,
+                        searchOption: self.searchOption,
 
-                        pageSize : self.pageSize,
-                        page : (self.page-1)*self.pageSize,
+                        pageSize: self.pageSize,
+                        page: (self.page - 1) * self.pageSize,
                     };
                     $.ajax({
                         url: "board-list.dox",
@@ -169,7 +182,7 @@
                             console.log("보드 리스트 뭐 어쩃든 성공~~~~~");
                             console.log(data);
                             self.list = data.list;
-                            self.index = Math.ceil(data.cnt /self.pageSize);
+                            self.index = Math.ceil(data.cnt / self.pageSize);
                         }
                     });
                 },
@@ -195,23 +208,61 @@
                     // console.log(boardNo);
                     pageChange("board-view.do", { boardNo: boardNo });
                 },
-                fnPage : function(num){
+                fnPage: function (num) {
                     let self = this;
                     // alert("페이징 숫자 클릭됨 " + num);
                     self.page = num;
                     self.fnList();
                 },
-                fnMove : function(num){
+                fnMove: function (num) {
                     let self = this;
                     self.page += num;
                     self.fnList();
+                },
+
+                fnAllRemove: function () {
+                    let self = this;
+                    // console.log(self.selectItem);
+                    var fList = JSON.stringify(self.selectItem);
+                    var param = { selectItem: fList }; //서버쪽에 이름을 selectItem로 넘김
+
+                    $.ajax({
+                        url: "/board/deleteList.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+
+                            alert("체크된것 삭제되었습니다.");
+                            self.fnList();
+
+                        }
+                    });
+                },
+
+                fnAllCheck: function () {
+                    let self = this;
+                    // alert("올 클릭감지 "+ JSON.stringify(self.list));
+                    self.selectFlg = !self.selectFlg;
+
+                    if (self.selectFlg) {
+                        self.selectItem = [];
+                        for (i = 0; i < self.list.length; i++) {
+                            // self.selectItem[i] = self.list[i].stuNo
+                            self.selectItem.push(self.list[i].boardNo);
+                        }
+                    } else {
+                        self.selectItem = [];
+                    }
+
                 }
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
                 self.fnList();
-                
+
             }
         });
 

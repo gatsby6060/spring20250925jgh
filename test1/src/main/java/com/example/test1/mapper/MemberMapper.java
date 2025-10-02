@@ -17,4 +17,7 @@ public interface MemberMapper {
 
 	//회원저장(가입)
 	int memberAdd(HashMap<String, Object> map);
+
+	//첨부파일(이미지) 업로드 일단여기까지 251002 1837
+	int insertMemberImg(HashMap<String, Object> map);
 }

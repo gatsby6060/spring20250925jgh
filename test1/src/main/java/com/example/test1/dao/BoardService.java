@@ -51,6 +51,7 @@ public class BoardService {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		int cnt = boardMapper.insertBoard(map);
 
+		resultMap.put("boardNo", map.get("boardNo"));
 		resultMap.put("result", "success");
 		return resultMap;
 
@@ -65,9 +66,13 @@ public class BoardService {
 		
 		List<Comment> commentList = boardMapper.selectCommentList(map);
 		
+		List<Board> fileList = boardMapper.selectFileList(map);
+		
+		
+		System.out.println("서비스에서 fileList에 값 넣기직전 fileList는 " + fileList );
+		resultMap.put("fileList", fileList);
 		resultMap.put("info", board);
-		System.out.println("서비스에서 commentlist에 값 넣기직전 info는 " + board );
-	
+//		System.out.println("서비스에서 commentlist에 값 넣기직전 info는 " + board );
 		resultMap.put("commentList", commentList);
 		resultMap.put("result", "success");
 		return resultMap;
@@ -95,5 +100,23 @@ public class BoardService {
 		return resultMap;
 
 	}
+	
+	
+	public HashMap<String, Object> removeBoardList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int cnt = boardMapper.deleteBoardList(map);
+
+		resultMap.put("cnt", cnt);
+		resultMap.put("result", "success");
+		
+		return resultMap;
+	}
+
+	public void addBoardImg(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		int cnt = boardMapper.insertBoardImg(map);
+	}
+	
+	
 
 }

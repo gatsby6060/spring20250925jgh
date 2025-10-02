@@ -92,6 +92,11 @@
                 </select>
             </div>
 
+                    <div>
+                        <th>파일첨부</th>
+                        <td><input type="file" id="file1" name="file1" accept=".jpg, .png"></td>
+                    </div>
+
             <div>
                 <button @click="fnJoin">회원가입</button>
             </div>
@@ -299,7 +304,7 @@
                     // }
 
 
-                    alert("서버 보내기 직전1");
+                    // alert("서버 보내기 직전1");
                     let param = {
 
                         id: self.id,
@@ -312,7 +317,7 @@
                         status: self.status,
 
                     };
-                    alert("서버 보내기 직전2");
+                    // alert("서버 보내기 직전2");
                     $.ajax({
                         url: "/member/add.dox",
                         dataType: "json",
@@ -320,8 +325,17 @@
                         data: param,
                         success: function (data) {
                             if (data.result == "success") {
+
+                            console.log("회원가입하고 돌아온 data값" + JSON.stringify(data));    
+                            var form = new FormData();
+                            form.append("file1", $("#file1")[0].files[0]);
+                            form.append("userId", data.userId); // 임시 pk
+                            self.upload(form);
+
+
+
                                 alert("가입되었습니다.");
-                                location.href = "/member/login.do";
+                                // location.href = "/member/login.do"; 잠시 수석처리
                             } else {
                                 alert("오류가 발생했습니다.");
                             }
@@ -342,7 +356,23 @@
                     } else {
                         alert("문자인증에 실패했습니다.");
                     }
-                }
+                },
+
+                // 파일 업로드
+                upload: function (form) {
+                    var self = this;
+                    $.ajax({
+                        url: "/member/fileUpload.dox"
+                        , type: "POST"
+                        , processData: false
+                        , contentType: false
+                        , data: form
+                        , success: function (data) {
+                            console.log(data);
+                        }
+                    });
+                },
+
 
             }, // methods                
             mounted() {

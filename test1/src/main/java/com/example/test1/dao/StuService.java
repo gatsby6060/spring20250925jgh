@@ -77,6 +77,15 @@ public class StuService {
 		return resultMap;
 	}
 
+	public HashMap<String, Object> removeStudentList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int cnt = stuMapper.deleteStudentList(map);
 
+		resultMap.put("cnt", cnt);
+		resultMap.put("result", "success");
+		
+		return resultMap;
+	}
+	
 	
 }

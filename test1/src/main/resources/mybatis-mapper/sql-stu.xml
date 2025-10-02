@@ -20,6 +20,16 @@
 		WHERE STU_NO = #{stuNo}
 	</delete>
 	
+	
+	
+	<delete id="deleteStudentList" parameterType="hashmap">
+		DELETE FROM STUDENT
+		WHERE STU_NO IN
+			<foreach collection="list" item="item" index="index" open="(" close=")" separator=","> 
+				#{item} 
+			</foreach> 
+	</delete>
+	
 	<!--SELECT s.stu_no, s.stu_name, s.stu_dept, NVL(AVG(e.ENR_GRADE), 0) as
 		avgGrade
 		from student s
@@ -45,6 +55,10 @@
 		UPDATE student SET stu_name = #{stuName}, stu_dept = #{stuDept}
 		WHERE STU_NO = #{stuNo}
 	</update>
+	
+	
+
+	
 </mapper>
 
 

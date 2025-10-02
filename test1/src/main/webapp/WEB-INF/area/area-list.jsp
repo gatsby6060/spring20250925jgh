@@ -31,7 +31,7 @@
             .index {
                 margin-right: 10px;
                 text-decoration: none;
-                color : black
+                color: black
             }
 
             .active {
@@ -44,13 +44,24 @@
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-             <div>
-                도/특별시 : 
-                <select v-model="si" @change="fnList">
+            <div>
+                도/특별시 :
+                <select v-model="si" @change="fnGuList">
                     <option value="">:: 전체 ::</option>
                     <option :value="item.si" v-for="item in siList">{{item.si}}</option>
                 </select>
-             </div>
+                구:
+                <select v-model="gu" @change="fnDongList">
+                    <option value="">:: 선택 ::</option>
+                    <option :value="item.gu" v-for="item in guList">{{item.gu}}</option>
+                </select>
+                동:
+                <select v-model="dong">
+                    <option value="">:: 선택 ::</option>
+                    <option :value="item.dong" v-for="item in dongList">{{item.dong}}</option>
+                </select>
+                <button @click="fnList">검색</button>
+            </div>
             <table>
                 <tr>
                     <th>도/특별시</th>
@@ -73,21 +84,21 @@
                 <a v-if="page!=1" @click="fnMove(-1)" href="javascript:;">←</a>
                 <a v-if="page>=2" href="javascript:;" @click="fnPage(page-1)">◀</a>
                 <!-- <a else></a> -->
-               
-              
+
+
                 <a @click="fnPage(num)" class="index" href="javascript:;" v-for="num in index">
                     <span :class="{active : page == num}">{{num}}</span>
                     <!-- <span v-if="num==page" class="active">{{num}}</span>
                         <span v-else>{{num}}</span> -->
                 </a>
-                
+
 
                 <!-- <div>
                 <a @click="fnPage(num)" class="index" href="javascript:;" v-for="num in perTenCnt">
                 <span :class="{active : page == num}">{{num}}</span>
                 </a>
                 </div> -->
-                
+
                 <a v-if="page!=index" href="javascript:;" @click="fnPage(page+1)">▶</a>
                 <!-- <a v-else></a> -->
                 <a v-if="page!=index" @click="fnMove(1)" href="javascript:;">→</a>
@@ -109,10 +120,14 @@
                     pageSize: 20, // 한페이지에 출력할 개수
                     page: 1, //현재페이지
                     index: 0, // 최대 페이지 값
-                    perTenCnt : [], // 한번에 보여줄때 총 몇개의 페이징 숫자를 보여줄지 결정
-                    siList : [],
+                    perTenCnt: [], // 한번에 보여줄때 총 몇개의 페이징 숫자를 보여줄지 결정
+                    siList: [],
+                    guList: [], //서버에서 받을 구~
+                    dongList : [] , //서버에서 받을 동!
 
-                    si : "", //선택한 시
+                    si: "", //선택한 시
+                    gu: "", //선택한 구
+                    dong: "", //선택한 동
                 };
             },
             methods: {
@@ -122,8 +137,10 @@
                     let param = {
                         pageSize: self.pageSize,
                         page: (self.page - 1) * self.pageSize,
-                        
-                        si : self.si, //self.si는 위에 있는 변수 si다 그 앞에는 서버에 '키'로 전달할때 쓰는 si다
+
+                        si: self.si, //self.si는 위에 있는 변수 si다 그 앞에는 서버에 '키'로 전달할때 쓰는 si다
+                        gu: self.gu,
+                        dong: self.dong,
                     };
                     // alert("여기서 얼럿이 가능?" + si); //불가능
                     $.ajax({
@@ -139,7 +156,7 @@
                             // alert("이거 20나와야함" + self.pageSize );
                             self.index = Math.ceil(data.cnt / self.pageSize);
                             // alert("이거 178나와야함" + self.index );
-                            perTenCnt = [10,11,12,13,14,15,16,17,18,19,20]; //일단 뭐 하드코딩...
+                            perTenCnt = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; //일단 뭐 하드코딩...
                         }
                     });
                 },
@@ -154,6 +171,8 @@
                     self.page += num;
                     self.fnList();
                 },
+
+                //이게 시 리스트!!!!!!!!!!!!!!!!!!!!!!!!!시시시시시시
                 fnSiList: function () {
                     let self = this;
                     let param = {
@@ -167,7 +186,52 @@
                             // console.log("성공했으면 뭐라도 받았겠지");
                             console.log(data);
                             self.siList = data.list;
-               
+                            
+
+                        }
+                    });
+                },
+
+                //아래가 구 리스트!!!!!!!!!!!!!!!!구구구구구
+                fnGuList: function () {
+                    let self = this;
+                    let param = {
+                         si : self.si, 
+                        //  si : "인천광역시" // 테스트용 인천광역시 하드코딩
+                    };
+                    $.ajax({
+                        url: "/area/gu.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            console.log(data);
+                            self.gu="";
+                            self.guList = data.list;
+                            
+                            
+                        }
+                    });
+                },
+
+                //아래가 동 리스트!!!!!!!!!!!!!!!!동동동동동동
+                fnDongList: function () {
+                    let self = this;
+                    let param = {
+                         si : self.si, 
+                         gu : self.gu 
+                    };
+                    $.ajax({
+                        url: "/area/dong.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            console.log("서버에서 브라우저로 되돌아온 동! 데이터1 " + JSON.stringify(data));
+                            self.dong="";
+                            self.dongList = data.list;
+                            // console.log("서버에서 브라우저로 되돌아온 동! 데이터2 " + self.dongList);
+
                         }
                     });
                 },
@@ -177,6 +241,7 @@
                 let self = this;
                 self.fnList();
                 self.fnSiList();
+                self.fnGuList();
             }
         });
 

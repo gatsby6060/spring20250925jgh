@@ -40,7 +40,10 @@
                 </tr>
                 <tr>
                     <th>내용</th>
-                    <td>{{info.contents}}</textarea></td>
+                    <td>
+                        <img v-for="item in fileList" :src="item.filePath"><br>
+                        {{info.contents}}
+                    </td>
                 </tr>
             </table>
             <!-- <div>--------이하 댓글부분-------</div> -->
@@ -79,7 +82,8 @@
                 info: "",
                 commentList: [], //중요! for에서...뽑아서 돌리려면...
                 sessionId: "${sessionId}",
-                contents : ""///
+                contents : "",///
+                fileList: [],
             };
         },
         methods: {
@@ -101,7 +105,7 @@
                         
                         self.info = data.info;
                         self.commentList = data.commentList;
-                    
+                        self.fileList = data.fileList;
                     }
                 });
             },
