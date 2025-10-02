@@ -16,12 +16,17 @@
 	</select>
 	
 	<insert id="memberAdd" 	
-	parameterType="hashmap" 
-	useGeneratedKeys="true" 
-	keyColumn="USERID" 
-	keyProperty="userId">
+			parameterType="hashmap" 
+			useGeneratedKeys="true" 
+			keyColumn="USERID" 
+			keyProperty="userId">
 		INSERT INTO TBL_USER
 		VALUES (#{id}, #{pwd}, #{name},  NULL, NULL, NULL, #{addr}, #{phone}, NULL, #{gender}, #{status}, SYSDATE, SYSDATE)
+	</insert>
+	
+	<insert id = "insertMemberImg" parameterType="hashmap">
+		INSERT INTO TBL_USER_FILE
+		VALUES(FILE_SEQ.NEXTVAL, #{userId}, #{path}, #{filename}, #{orgName}, #{size, javaType=long, jdbcType=NUMERIC}, #{ext})
 	</insert>
 	
 </mapper>

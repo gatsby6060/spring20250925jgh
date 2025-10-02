@@ -127,7 +127,7 @@
 
 	<insert id = "insertBoardImg" parameterType="hashmap">
 		INSERT INTO TBL_BOARD_FILE
-		VALUES(FILE_SEQ.NEXTVAL, #{boardNo}, #{path}, #{filename}, #{orgName}, #{size}, #{ext})
+		VALUES(FILE_SEQ.NEXTVAL, #{boardNo}, #{path}, #{filename}, #{orgName}, #{size, javaType=long, jdbcType=NUMERIC}, #{ext})
 	</insert>
 	
 	<select id="selectFileList" parameterType="hashmap" resultType="com.example.test1.model.Board">
