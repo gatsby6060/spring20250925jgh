@@ -25,12 +25,6 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-         <!-- 메인페이지입니다. -->
-         {{sessionNameee}}님 환영합니다. 메인페이지입니다!
-         <div>
-            <a href="/board-list.do"><button>게시판으로 이동</button></a>
-            <button @click="fnLogout">로그아웃</button>
-         </div>
     </div>
 </body>
 </html>
@@ -40,23 +34,21 @@
         data() {
             return {
                 // 변수 - (key : value)
-                sessionId : "${sessionId}",
-                sessionNameee : "${sessionName}"
+                userId : "${userId}"
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnLogout: function () {
+            fnList: function () {
                 let self = this;
                 let param = {};
                 $.ajax({
-                    url: "/member/logout.dox",
+                    url: "",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        alert(data.msg + "!!!");
-                        location.href="/member/login.do";
+
                     }
                 });
             }

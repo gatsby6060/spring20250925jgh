@@ -29,6 +29,55 @@
 		VALUES(FILE_SEQ.NEXTVAL, #{userId}, #{path}, #{filename}, #{orgName}, #{size, javaType=long, jdbcType=NUMERIC}, #{ext})
 	</insert>
 	
+	
+	<!--251010 생년월일 날짜변환 전경환-->
+	<!--
+	  <select id="selectMemberList" parameterType="hashmap" resultType="com.example.test1.model.Member">
+       select 
+       NVL(TO_CHAR(TO_DATE(BIRTH), 'YY.MM.DD') , '정보없음')       BIRTH , 
+       u.* 
+       FROM tbl_user u
+	</select>-->
+	
+	
+	<select id="selectMemberList" parameterType="hashmap" resultType="com.example.test1.model.Member">
+		SELECT 
+		    U.*,
+		    DECODE(
+		        BIRTH,
+		        NULL,
+		        '정보없음',
+		        SUBSTR(BIRTH, 3, 2) || '.' || SUBSTR(BIRTH, 5,2) || '.' || SUBSTR(BIRTH, 7, 2)
+		 	   ) CBIRTH
+		FROM TBL_USER U
+	</select>
+
+	
+	
+	<!--필요할것 같아서 그냥 만듬(251010)-->
+	<select id="selectMemberCnt" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*)
+		FROM TBL_USER U
+	</select>
+	
+	<update id="cntIncrease" parameterType="hashmap">
+		<!-- 로그인 실패 시 -->
+		UPDATE TBL_USER 
+		SET 
+			CNT = CNT+1 
+		WHERE USERID = #{id}
+	</update>
+	
+	<update id="cntInit" parameterType="hashmap">
+		UPDATE TBL_USER
+		SET 
+			CNT = 0
+		WHERE USERID = #{id}
+	</update>
+	
+	
+	
+	
 </mapper>
 
 

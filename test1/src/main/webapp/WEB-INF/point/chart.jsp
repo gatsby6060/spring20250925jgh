@@ -27,26 +27,47 @@
             tr:nth-child(even) {
                 background-color: azure;
             }
+
+            #index {
+                margin-right: 5px;
+                text-decoration: none;
+            }
+
+            .active {
+                color: black;
+                font-weight: bold;
+            }
         </style>
     </head>
 
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+            여기는 /point/chart.jsp 파일입니다.
             <div>
-                <div>
-                    <label>아이디:<input v-model="id"></label>
-                </div>
-                <div>
-                    <label>비밀번호:<input type="password" v-model="pwd"></label>
-                </div>
-                <div>
-                    <button @click="fnLogin">로그인</button>
-                    <!-- <button @click="pwHelp">로그인2</button> -->
-                    <a href="/member/join.do"><button>회원가입</button></a>
-                </div>
+                <table>
+                    <tr>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>주소</th>
+                        <th>성별</th>
+                        <th>현재포인트</th>
+                        <th>마지막포인트시간</th>
+                    </tr>
+                    <tr v-for="(item) in list">
+                        <td>
+                            <a href="javascript:;" @click=""> {{item.userId}} </a>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.gender}}</td>
+                        <td>{{item.aPoint}}</td>
+                        <td>{{item.cDate}}</td>
+
+                    </tr>
+                </table>
             </div>
-        </div><!--app 끝-->
+        </div>
     </body>
 
     </html>
@@ -56,44 +77,31 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    id: "",
-                    pwd: ""
+                    list : [],
                 };
             },
             methods: {
                 // 함수(메소드) - (key : function())
-                fnLogin: function () {
+                fnList: function () {
                     let self = this;
-                    let param = {
-                        id: self.id,
-                        pwd: self.pwd
-                    };
+                    let param = {};
                     $.ajax({
-                        url: "/member/login.dox",
+                        url: "/point/list.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
-                            alert(data.msg);
-                            if (data.result == "success") {
-                                location.href = "/main.do";
-                                location.href = data.url;
-                            }
+                            // alert(JSON.stringify(data));
+                            // console.log(data);
+                            self.list = data.list;
                         }
                     });
-                },
-
-
-                // pwHelp() {
-                    // let p = self.pwd;
-                    // let ok =  /[A-Za-z]/.test(p) && /\d/.test(p); //p.length >= 8 &&
-                    // return ok ? "안전한 비밀번호입니다." : "8자 이상 & 숫자/문자 조합 권장";
-                // },
-
+                }
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
+                self.fnList();
             }
         });
 

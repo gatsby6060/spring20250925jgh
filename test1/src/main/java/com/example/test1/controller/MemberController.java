@@ -36,6 +36,20 @@ public class MemberController {
 
 		return "/member/member-join"; // .jsp빠진형태
 	}
+	
+	@RequestMapping("/mgr/member/list.do")
+	public String mgr(Model model) throws Exception {
+
+		return "/mgr/member-list"; // .jsp빠진형태
+	}
+	
+	@RequestMapping("/mgr/member/view.do")
+	public String view(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		
+		request.setAttribute("userId", map.get("userId"));
+		return "/mgr/member-view"; 
+	}
+	
 
 	@RequestMapping("/addr.do")
 	public String addr(Model model) throws Exception {
@@ -148,5 +162,32 @@ public class MemberController {
 
 		return fileName;
 	}
+	
+	
+	
+	@RequestMapping(value = "/mgr/member/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String memberList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+//		System.out.println("/mgr/member/list.dox 스프링서버 진입완료");
+		resultMap = memberService.getMemberList(map);
+
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	
+	@RequestMapping(value = "/mgr/remove-cnt.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String RemoveCnt(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		System.out.println("/mgr/member/cntinit.dox 스프링서버 진입완료");
+		resultMap = memberService.removeCnt(map);
+
+		return new Gson().toJson(resultMap);
+	}
+	
 
 }
