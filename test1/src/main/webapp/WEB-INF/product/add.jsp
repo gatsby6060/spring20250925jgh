@@ -42,9 +42,12 @@
              <div>
                 음식 종류(한식, 중식, 양식...)
                 <select v-model="menuPart">
-                    <option value="10">한식</option>
-                    <option value="20">중식</option>
-                    <option value="30">양식</option>
+                    <option value="">선택하세요</option>
+                    <template v-for="menu in menuList">
+                            <option v-if="menu && menu.depth == 1" :value="menu.menuNo">
+                                {{menu.menuName}}
+                            </option>
+                    </template>
                 </select>
              </div>
 
@@ -107,6 +110,8 @@
                    foodName: "",
                    foodInfo: "",
                    price: "",
+                   menuList: [],
+                   //foodKind: "",
                 };
             },
             methods: {
@@ -154,7 +159,7 @@
                             console.log("회원가입하고 돌아온 data값" + JSON.stringify(data));    
                             var form = new FormData();
                             form.append("file1", $("#file1")[0].files[0]);
-                            form.append("userId", data.userId); // 임시 pk
+                            form.append("foodNo", data.foodNo); // 음식 번호
                             self.upload(form);
 
 
@@ -186,11 +191,26 @@
                     });
                 },
 
+                // 메뉴 목록 가져오기
+                fnGetMenuList: function() {
+                    var self = this;
+                    $.ajax({
+                        url: "/product/list.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: {},
+                        success: function (data) {
+                            console.log("메뉴 목록:", data);
+                            self.menuList = data.menuList || [];
+                        }
+                    });
+                },
+
             }, // methods                
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
-                // window.vueObj = this;
+                self.fnGetMenuList();
             }
         });
 

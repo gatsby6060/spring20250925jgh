@@ -46,6 +46,20 @@ public class ProductService {
 		return resultMap;
 	}
 	
+	public HashMap<String, Object> addProductFile(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			int cnt = productMapper.insertProductFile(map);
+			resultMap.put("result", "success");
+			resultMap.put("cnt", cnt);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("error", e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		return resultMap;
+	}
+	
 //	public HashMap<String, Object> getProductSearch(HashMap<String, Object> map) {
 //		// TODO Auto-generated method stub
 //		HashMap<String, Object> resultMap = new HashMap<String, Object>();

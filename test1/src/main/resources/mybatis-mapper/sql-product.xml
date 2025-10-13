@@ -8,9 +8,11 @@
 			resultType="com.example.test1.model.Product">
 		SELECT * from tbl_food f
 		INNER JOIN TBL_FOOD_IMG I ON F.FOOD_NO = I.FOOD_NO
-		WHERE 
-			(FOOD_NAME LIKE '%'||#{keyword}||'%'
+		WHERE 1=1
+		<if test="keyword != null and keyword != ''">
+		AND	(FOOD_NAME LIKE '%'||#{keyword}||'%'
 			  OR FOOD_INFO LIKE '%'||#{keyword}||'%')
+		</if>		  
 		<if test="menuNo != null and menuNo != ''">
 			AND F.MENU_NO = #{menuNo}
 		</if>		  
@@ -79,10 +81,16 @@
 	<insert id = "insertProduct" 
 			parameterType="hashmap" 
 			useGeneratedKeys="true" 
-			keyColumn="FOODNO" 
+			keyColumn="FOOD_NO" 
 			keyProperty="foodNo">
-		INSERT INTO tbl_food 
-		VALUES (B_SEQ.NEXTVAL, #{title}, #{contents}, #{userId}, 0, 0, 1, SYSDATE, SYSDATE)
+		INSERT INTO tbl_food (FOOD_NO, FOOD_NAME, PRICE, FOOD_KIND, FOOD_INFO, SELLYN, MENU_PART)
+		VALUES (FOOD_SEQ.NEXTVAL, #{foodName}, #{price}, NVL(#{foodKind, jdbcType=VARCHAR}, ''), 
+				#{foodInfo}, 'Y', #{menuPart})
+	</insert>
+	
+	<insert id="insertProductFile" parameterType="hashmap">
+		INSERT INTO tbl_food_img (FOODFILE_NO, FOOD_NO, FILEPATH, FILENAME, FILEORGNAME, FILESIZE, FILEETC, THUMBNAILYN)
+		VALUES (FOODFILE_SEQ.NEXTVAL, #{foodNo}, #{filePath}, #{fileName}, #{fileOrgName}, #{fileSize}, #{fileEtc}, 'Y')
 	</insert>
 
 </mapper>
