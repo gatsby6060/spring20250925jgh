@@ -37,62 +37,40 @@
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-             이화면은 음식(프로덕트) add.jsp화면임
+            이화면은 음식(프로덕트) add.jsp화면임
 
-             <div>
+            <div>
                 음식 종류(한식, 중식, 양식...)
                 <select v-model="menuPart">
                     <option value="">선택하세요</option>
                     <template v-for="menu in menuList">
-                            <option v-if="menu && menu.depth == 1" :value="menu.menuNo">
-                                {{menu.menuName}}
-                            </option>
+                        <option v-if="menu && menu.depth == 1" :value="menu.menuNo">
+                            {{menu.menuName}}
+                        </option>
                     </template>
                 </select>
-             </div>
+            </div>
 
             <div>
                 이름 : <input v-model="foodName">
             </div>
             <div>
-                설명 : <input v-model="foodInfo" >
+                설명 : <textarea v-model="foodInfo" cols="20" rows="4"></textarea>
             </div>
             <div>
                 가격 :
                 <input class="phone" v-model="price">
             </div>
 
-
-            <!-- 
             <div>
-                성별 :
-                <label><input type="radio" v-model="gender" value="M">남자</label>
-                <label><input type="radio" v-model="gender" value="F">여자</label>
-            </div> 
-            -->
-            <!-- 
-            <div>
-                가입 권한 :
-                <select v-model="status">
-                    <option value="A">관리자</option>
-                    <option value="S">판매자</option>
-                    <option value="C">소비자</option>
-                </select>
-            </div> 
-            -->
-
-                    <div>
-                        <th>이미지 파일첨부</th>
-                        <td><input type="file" id="file1" name="file1" accept=".jpg, .png"></td>
-                    </div>
+                <th>이미지 파일첨부</th>
+                <td><input type="file" id="file1" name="file1" accept=".jpg, .png"></td>
+            </div>
 
             <div>
                 <button @click="fnAdd">음식 입력</button>
             </div>
-            <!-- <div>
-                {{timer}}
-                <button @click="fnTimer">시작!</button>
-            </div> -->
+
         </div> <!--app끝-->
     </body>
 
@@ -106,12 +84,12 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                   menuPart: "",
-                   foodName: "",
-                   foodInfo: "",
-                   price: "",
-                   menuList: [],
-                   //foodKind: "",
+                    menuPart: "",
+                    foodName: "",
+                    foodInfo: "",
+                    price: "",
+                    menuList: [],
+                    //foodKind: "",
                 };
             },
             methods: {
@@ -156,11 +134,11 @@
                         success: function (data) {
                             if (data.result == "success") {
 
-                            console.log("회원가입하고 돌아온 data값" + JSON.stringify(data));    
-                            var form = new FormData();
-                            form.append("file1", $("#file1")[0].files[0]);
-                            form.append("foodNo", data.foodNo); // 음식 번호
-                            self.upload(form);
+                                console.log("회원가입하고 돌아온 data값" + JSON.stringify(data));
+                                var form = new FormData();
+                                form.append("file1", $("#file1")[0].files[0]);
+                                form.append("foodNo", data.foodNo); // 음식 번호
+                                self.upload(form);
 
 
 
@@ -192,10 +170,11 @@
                 },
 
                 // 메뉴 목록 가져오기
-                fnGetMenuList: function() {
+                fnGetMenuList: function () {
                     var self = this;
                     $.ajax({
-                        url: "/product/list.dox",
+                        url: "/product/list.dox", //이것도 가능한데 선생님은 아래로 하심
+                        // url: "/product/menu.dox", //251014새로 작성
                         dataType: "json",
                         type: "POST",
                         data: {},

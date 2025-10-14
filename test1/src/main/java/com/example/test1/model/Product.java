@@ -11,6 +11,8 @@ public class Product {
 	private String foodKind;
 	private String foodInfo;
 	private String sellYn;
+	private String menuNo;
+	private String menuPart;
 	
 	private String foodFileNo;
 //	private String foodNo;

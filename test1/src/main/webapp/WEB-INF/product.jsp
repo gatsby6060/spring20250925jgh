@@ -8,8 +8,11 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/js/page-change.js"></script>
+
     <title>쇼핑몰 헤더</title>
     <link rel="stylesheet" href="/css/product-style.css">
+    
 </head>
 
 <body>
@@ -77,10 +80,12 @@
             <section class="product-list">
                 <!-- 제품 항목 -->
                 <div v-for="item in list" class="product-item">
-                    <img :src="item.filePath" alt="제품 1">
-                    <h3>{{item.foodName}}</h3>
-                    <p>{{item.foodInfo}}</p>
-                    <p class="price">₩{{item.price.toLocaleString()}}</p>
+                    <a href="javascript:;" @click="fnView(item.foodNo)">
+                        <img :src="item.filePath" alt="제품 1">
+                        <h3>{{item.foodName}}</h3>
+                        <p>{{item.foodInfo}}</p>
+                        <p class="price">₩{{item.price.toLocaleString()}}</p>
+                    </a>
                 </div>
                 <!--
                 <div class="product-item">
@@ -131,6 +136,12 @@
                     }
                 });
             },
+
+            fnView :  function(foodNo){
+                //self고 뭐고 필요없이 받자마자 그대로 넘김
+                pageChange("/product/view.do", { foodNo: foodNo }); //선생님사용자정의?함수
+            },
+            
             // fnSearch : function () {
             //     var self = this;
             //     var nparmap = {
@@ -147,24 +158,24 @@
             //         }
             //     });
             // },
-            fnTopKind : function () {
-                var self = this;
-                // alert("프론트 fnTopKind 합수 진입");
-                alert("topkindword은"+ self.topkindword);
-                var nparmap = {
-                    topkindword: self.topkindword,
-                };
-                $.ajax({
-                    url: "/product/TopKindClick.dox",
-                    dataType: "json",
-                    type: "POST",
-                    data: nparmap,
-                    success: function (data) {
-                        console.log(data);
-                        self.list = data.list;
-                    }
-                });
-            }
+            // fnTopKind : function () {
+            //     var self = this;
+            //     // alert("프론트 fnTopKind 합수 진입");
+            //     alert("topkindword은"+ self.topkindword);
+            //     var nparmap = {
+            //         topkindword: self.topkindword,
+            //     };
+            //     $.ajax({
+            //         url: "/product/TopKindClick.dox",
+            //         dataType: "json",
+            //         type: "POST",
+            //         data: nparmap,
+            //         success: function (data) {
+            //             console.log(data);
+            //             self.list = data.list;
+            //         }
+            //     });
+            // }
         },
         mounted() {
             var self = this;

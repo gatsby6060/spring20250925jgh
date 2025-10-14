@@ -21,7 +21,7 @@
 			keyColumn="USERID" 
 			keyProperty="userId">
 		INSERT INTO TBL_USER
-		VALUES (#{id}, #{pwd}, #{name},  NULL, NULL, NULL, #{addr}, #{phone}, NULL, #{gender}, #{status}, SYSDATE, SYSDATE)
+		VALUES (#{id}, #{pwd}, #{name},  NULL, NULL, NULL, #{addr}, #{phone}, NULL, #{gender}, #{status}, SYSDATE, SYSDATE, 0)
 	</insert>
 	
 	<insert id = "insertMemberImg" parameterType="hashmap">

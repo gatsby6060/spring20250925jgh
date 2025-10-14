@@ -22,8 +22,17 @@ public interface ProductMapper {
 	// 음식 추가입력
 	int insertProduct(HashMap<String, Object> map);
 	
+	// 음식제품 등록
+	int insertFood(HashMap<String, Object> map);
+	
 	// 음식 이미지 파일 저장
 	int insertProductFile(HashMap<String, Object> map);
+
+	// 음식 이미지 파일 저장2 , 제품 이미지등록
+	int insertFoodImg(HashMap<String, Object> map);
+
+	// 음식 1개 모든 상세정보    제품상세정보조회
+	Product selectFood(HashMap<String, Object> map);
 
 //	List<Product> foodList(HashMap<String, Object> map);
 //	
