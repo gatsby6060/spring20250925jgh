@@ -21,4 +21,14 @@ public class MapController {
     public String mapjgh(Model model) throws Exception{
         return "/map/mapjgh";
     }
+	
+	@RequestMapping("/mapjghslide.do")  //테스트용
+    public String mapjghslide(Model model) throws Exception{
+        return "/map/mapjghslide";
+    }
+	
+	@RequestMapping("/mapjghcalenda.do")  //테스트용
+    public String mapjghcalenda(Model model) throws Exception{
+        return "/map/mapjghcalenda";
+    }
 }
