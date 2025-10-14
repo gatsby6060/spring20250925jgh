@@ -16,4 +16,9 @@ public class MapController {
     public String map2(Model model) throws Exception{
         return "/map/map2";
     }
+	
+	@RequestMapping("/mapjgh.do")  //테스트용
+    public String mapjgh(Model model) throws Exception{
+        return "/map/mapjgh";
+    }
 }
