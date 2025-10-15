@@ -37,6 +37,12 @@ public class MemberController {
 		return "/member/member-join"; // .jsp빠진형태
 	}
 	
+	@RequestMapping("/member/pwd.do")
+	public String pwd(Model model) throws Exception {
+
+		return "/member/pwd"; // .jsp빠진형태
+	}
+	
 	@RequestMapping("/mgr/member/list.do")
 	public String mgr(Model model) throws Exception {
 
@@ -57,6 +63,14 @@ public class MemberController {
 		return "/jusoPopup"; // .jsp빠진형태
 	}
 
+	
+	
+	
+	
+	
+	
+	
+
 	@RequestMapping(value = "/member/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String boardList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -76,6 +90,29 @@ public class MemberController {
 //		System.out.println("컨트롤러 응답 직전 resultMap 상황 "+ resultMap);
 		return new Gson().toJson(resultMap);
 	}
+	
+	
+	@RequestMapping(value = "/member/idnamephonecheck.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String idnamephonecheck(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		resultMap = memberService.idNamePhoneCk(map);
+		System.out.println("컨트롤러 응답 직전 resultMap 상황 "+ resultMap);
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	@RequestMapping(value = "/member/updatepwd.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String updatepwd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		resultMap = memberService.updatepwd(map);
+//		System.out.println("컨트롤러 응답 직전 resultMap 상황 "+ resultMap);
+		return new Gson().toJson(resultMap);
+	}
+	
 
 	@RequestMapping(value = "/member/logout.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -187,6 +224,32 @@ public class MemberController {
 		
 		System.out.println("/mgr/member/cntinit.dox 스프링서버 진입완료");
 		resultMap = memberService.removeCnt(map);
+
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	@RequestMapping(value = "/member/auth.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String auth(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("서버에 도착한 map 정보" + map);
+		
+		
+		resultMap = memberService.authMember(map);
+
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	@RequestMapping(value = "/member/pwd.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String pwd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("서버에 도착한 map 정보" + map);
+		
+
+		resultMap = memberService.updatePwd(map);
 
 		return new Gson().toJson(resultMap);
 	}

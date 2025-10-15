@@ -212,13 +212,16 @@
                     <div class="option">
                         <div>
                             <!-- <form onsubmit="searchPlaces(); return false;"> -->
-                            <form @submit.prevent="searchPlaces"></form>
+                            <form @submit.prevent="searchPlaces">
                             <!-- 키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> -->
                             키워드 : <input v-model="keyword" type="text" size="15">
                             <button type="submit">검색하기</button>
                             </form>
                         </div>
                     </div>
+
+
+
                     <hr>
                     <ul id="placesList"></ul>
                     <div id="pagination"></div>
@@ -248,7 +251,8 @@
                 // 키워드 검색을 요청하는 함수입니다
                 searchPlaces() {
 
-                    var keyword = document.getElementById('keyword').value;
+                    // var keyword = document.getElementById('keyword').value;
+                    var keyword = this.keyword; 
 
                     if (!keyword.replace(/^\s+|\s+$/g, '')) {
                         alert('키워드를 입력해주세요!');

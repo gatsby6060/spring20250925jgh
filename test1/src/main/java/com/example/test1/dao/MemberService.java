@@ -102,11 +102,45 @@ public class MemberService {
 		/*-----------해시 적용후 버전--------------------------------------------------------------S*/
 		if (member != null) {
 			// 아이디가 존재, 비밀번호 비교하기전
-			
+
 			// 사용자가 보낸 비밀번호 map에서 꺼낸 후 해시화한 값과
 			// member 객체 안에 있는 password와 비교
+			// 3-2. 비밀번호 해시 값 비교
+			Boolean loginFlg = passwordEncoder.matches((String) map.get("pwd"), member.getPassword());
+			System.out.println(loginFlg);
+
+			if (loginFlg) {
+				// 비밀번호를 정상 입력했을 경우
+				if (member.getCnt() >= 5) {
+					// 비밀번호는 정상입력했지만 이전에 5회 이상 틀린경우
+					message = "아이디, 암호가 정상이지만, 이미 5번이상 암호가 틀렸습니다!!";
+					result = "fail";
+				} else {
+					// 로그인 성공
+					// cnt값을 0으로 초기화
+					memberMapper.cntInit(map);
+					message = "로그인 성공!";
+					result = "success";
+					session.setAttribute("sessionId", member.getUserId());
+					session.setAttribute("sessionName", member.getName());
+					session.setAttribute("sessionStatus", member.getStatus());
+					if (member.getStatus().equals("A")) {
+						resultMap.put("url", "/mgr/member/list.do");
+					} else {
+						resultMap.put("url", "/main.do");
+					}
+				}
+			} else {
+				// 아이디는 맞지만, 비밀번호가 다른 경우
+				memberMapper.cntIncrease(map); // 실패횟수 1회증가
+				message = "아이디는 존재하지만 암호는 틀렸습니다. " + "\n 틀린횟수한계는 5번입입니다. \n현재 틀린횟수는 " + member.getCnt();
+				result = "fail";
+			}
+
 		} else {
 			// 아이디가 아예 없음
+			message = "아이디가 존재하지 않습니다.";
+			result = "fail";
 		}
 
 		/*-----------해시 적용후 버전--------------------------------------------------------------E*/
@@ -127,6 +161,42 @@ public class MemberService {
 
 //		resultMap.put("msg", message);
 		resultMap.put("result", result);
+
+		return resultMap;
+	}
+
+	public HashMap<String, Object> idNamePhoneCk(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		Member member = memberMapper.memberIdNamePhoneCk(map); // 아이디 패스워드가 map안에 담겨있을꺼임
+
+		String message = (member != null) ? "일치하는 아이디를 찾았습니다." : "아이디 이름 폰번호가 모두 일치하는 아이디가 없습니다.";
+		String result = (member != null) ? "true" : "false";
+
+		resultMap.put("msg", message);
+		resultMap.put("result", result);
+
+		return resultMap;
+	}
+
+	public HashMap<String, Object> updatepwd(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		// 이쯤에서 해시 처리
+		System.out.println(map);
+		map.get("pwd"); // 값꺼내기
+		// 3-1. 비밀번호 암호화(해시)
+		String hashPwd = passwordEncoder.encode((String) map.get("pwd"));
+		map.put("hashPwd", hashPwd);
+
+		int cnt = memberMapper.memberPwdUpdate(map); // 아이디 패스워드가 map안에 담겨있을꺼임
+		if (cnt < 1) {
+			resultMap.put("result", "fail");
+		} else {
+//			resultMap.put("userId", map.get("userId"));
+			resultMap.put("result", "success");
+		}
 
 		return resultMap;
 	}
@@ -210,4 +280,64 @@ public class MemberService {
 
 		return resultMap;
 	}
+
+	public HashMap<String, Object> authMember(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			// 리턴 Member
+			Member member = memberMapper.authMember1(map);
+			if (member != null) {
+				resultMap.put("result", "success");
+			} else {
+				resultMap.put("result", "fail");
+			}
+
+			// 2. 리턴 int
+//			int cnt = memberMapper.authMember2(map);
+//			if(cnt > 0) {
+//				resultMap.put("result", "success");
+//			}else {
+//				resultMap.put("result", "fail");
+//			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+
+		return resultMap;
+	}
+
+	public HashMap<String, Object> updatePwd(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			Member member = memberMapper.memberLogin(map);
+			member.getPassword();
+			boolean pwdFlg = passwordEncoder.matches((String) map.get("pwd"), member.getPassword());
+
+			if (pwdFlg) {
+				resultMap.put("result", "fail");
+				resultMap.put("msg", "비밀번호가 이전과 동일합니다.");
+
+			} else {
+				String hashPwd = passwordEncoder.encode((String) map.get("pwd"));
+				map.put("hashPwd", hashPwd);
+				memberMapper.updatePwd(map);
+
+				resultMap.put("result", "success");
+				resultMap.put("msg", "수정되었습니다.");
+			}
+
+			return resultMap;
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		return resultMap;
+	}
+
 }

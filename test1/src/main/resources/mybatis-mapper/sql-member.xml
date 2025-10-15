@@ -77,8 +77,56 @@
 	</update>
 	
 	
+	<select id="authMember1" parameterType="hashmap" resultType="com.example.test1.model.Member">
+		SELECT *
+		FROM TBL_USER
+		WHERE 1=1
+		AND USERID = #{userId} 
+		AND NAME = #{name}
+		AND REPLACE(PHONE, '-', '') = #{phone} 
+	</select>
+	
+	<select id="authMember2" parameterType="hashmap" resultType="int">
+		SELECT count(*)
+		FROM TBL_USER
+		WHERE 1=1
+		AND USERID = #{userId} 
+		AND NAME = #{name}
+		AND REPLACE(PHONE, '-', '') = REPLACE(#{phone},'-','') 
+	</select>
+	
+	<select id="memberIdNamePhoneCk" parameterType="hashmap" resultType="com.example.test1.model.Member">
+		SELECT *
+		FROM TBL_USER
+		WHERE USERID = #{userId} 
+		AND NAME = #{name}
+		AND REPLACE(PHONE, '-', '') = #{phone} 
+	</select>
 	
 	
+	<update id="memberPwdUpdate" parameterType="hashmap">
+	UPDATE TBL_USER 
+		SET 
+			PASSWORD = #{hashPwd} 
+		WHERE USERID = #{userId}
+	</update>
+
+	<update id="updatePwd" parameterType="hashmap">
+		UPDATE TBL_USER 
+		SET 
+			PASSWORD = #{hashPwd} 
+		WHERE USERID = #{userId}
+	</update>
+	
+	
+	
+	<select id="checkPwd" parameterType="hashmap" resultType="com.example.test1.model.Member">
+		SELECT *
+		FROM TBL_USER
+		WHERE 1=1
+		AND USERID = #{userId}
+		AND PASSWORD = #{hashPwd} 
+	</select>
 </mapper>
 
 
