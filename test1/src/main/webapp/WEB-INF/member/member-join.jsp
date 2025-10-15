@@ -335,7 +335,7 @@
 
 
                                 alert("가입되었습니다.");
-                                // location.href = "/member/login.do"; 잠시 수석처리
+                                location.href = "/member/login.do"; //잠시 수석처리
                             } else {
                                 alert("오류가 발생했습니다.");
                             }

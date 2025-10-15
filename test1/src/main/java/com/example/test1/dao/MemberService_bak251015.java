@@ -13,109 +13,104 @@ import com.example.test1.mapper.MemberMapper;
 import com.example.test1.model.Member;
 
 @Service
-public class MemberService {
+public class MemberService_bak251015 {
 
 	@Autowired
 	MemberMapper memberMapper;
 
 	@Autowired
 	HttpSession session;
-
+	
 	// 3 비밀번호 해시 객체 생성
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	/*
-	 * public HashMap<String, Object> login(HashMap<String, Object> map) {
-	 * HashMap<String, Object> resultMap = new HashMap<String, Object>();
-	 * 
-	 * Member member = memberMapper.memberCheck(map); // 아이디가 있나 확인 // String
-	 * message = (member != null) ? "로그인 성공!" : "로그인 실패!"; //
-	 * System.out.println("엠버서비스의 member임: " + member); String message = (member !=
-	 * null) ? " " : "아이디가 존재하지 않습니다."; if (member == null) { String result =
-	 * (member != null) ? " " : "fail"; resultMap.put("msg", message);
-	 * resultMap.put("result", result); return resultMap; }
-	 * 
-	 * member = memberMapper.memberLogin(map); // 아이디 패스워드가 map안에 담겨있을꺼임 message =
-	 * (member != null) ? "로그인 성공!" : "패스워드를 확인해주세요";
-	 * 
-	 * String result = (member != null) ? "success" : "fail";
-	 * 
-	 * if (member != null) { session.setAttribute("sessionId", member.getUserId());
-	 * session.setAttribute("sessionName", member.getName());
-	 * session.setAttribute("sessionStatus", member.getStatus()); }
-	 * 
-	 * resultMap.put("msg", message); resultMap.put("result", result);
-	 * 
-	 * return resultMap; }
-	 */
-
 	public HashMap<String, Object> login(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
-		Member member = memberMapper.memberLogin(map); // 아이디 패스워드가 map안에 담겨있을꺼임 //조건에 맞는것이 없다면 null이 올거임
-
-		String message = ""; // 로그인 성공 실패 여부 메시지
-		String result = ""; // 로그인 성공 실패 여부
-//		String message = (member != null) ? "로그인 성공!" : "패스워드를 확인해주세요";
-//		String result  =  (member != null) ? "success" : "fail";
-
-		/*-----------해시 적용전 버전--------------------------------------------------------------S*/
-
-//		if(member !=  null && member.getCnt() >= 5) {
-//			message = "암호는 맞지만...(이미 비밀번호를 5회이상 잘못입력하셨습니다)";
-//			result = "fail";
-//		} else if(member !=  null) {
-//			//cnt값 0으로 초기화
-//			memberMapper.cntInit(map);
-//			message = "로그인 성공!";
-//			result = "success";
-//			session.setAttribute("sessionId", member.getUserId());
-//			session.setAttribute("sessionName", member.getName());
-//			session.setAttribute("sessionStatus", member.getStatus());
-//			if(member.getStatus().equals("A")) {
-//				resultMap.put("url", "/mgr/member/list.do");
-//			} else {
-//				resultMap.put("url", "/main.do");
-//			}
-//			
-//		} else {
-//			Member idCheck = memberMapper.memberCheck(map);
-//			if(idCheck != null) {
-//				
-//				if(idCheck.getCnt() >=5) {
-//					message = "비밀번호를 5회이상 잘못입력하셨습니다";
-//				}else {
-//					//로그인 실패시 cnt 1증가
-//					memberMapper.cntIncrease(map);
-//					message = "패스워드를 확인해주세요";
-//				}
-//				
-//		
-//				
-//			} else {
-//				message = "아이디가 존재하지 않습니다.";
-//			}
-//		}
-		/*-----------해시 적용전 버전--------------------------------------------------------------E*/
-
-		/*-----------해시 적용후 버전--------------------------------------------------------------S*/
-		if (member != null) {
-			// 아이디가 존재, 비밀번호 비교하기전
-			
-			// 사용자가 보낸 비밀번호 map에서 꺼낸 후 해시화한 값과
-			// member 객체 안에 있는 password와 비교
-		} else {
-			// 아이디가 아예 없음
+		Member member = memberMapper.memberCheck(map); // 아이디가 있나 확인
+//		String message  =  (member != null) ? "로그인 성공!" : "로그인 실패!";
+//		System.out.println("엠버서비스의 member임: " + member);
+		String message = (member != null) ? " " : "아이디가 존재하지 않습니다.";
+		if (member == null) {
+			String result = (member != null) ? " " : "fail";
+			resultMap.put("msg", message);
+			resultMap.put("result", result);
+			return resultMap;
 		}
+		
+		member = memberMapper.memberLogin(map); // 아이디 패스워드가 map안에 담겨있을꺼임
+		message = (member != null) ? "로그인 성공!" : "패스워드를 확인해주세요";
 
-		/*-----------해시 적용후 버전--------------------------------------------------------------E*/
+		String result = (member != null) ? "success" : "fail";
+
+		if (member != null) {
+			session.setAttribute("sessionId", member.getUserId());
+			session.setAttribute("sessionName", member.getName());
+			session.setAttribute("sessionStatus", member.getStatus());
+		}
 
 		resultMap.put("msg", message);
 		resultMap.put("result", result);
 
 		return resultMap;
 	}
+	*/
+	
+	public HashMap<String, Object> login(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		Member member = memberMapper.memberLogin(map); // 아이디 패스워드가 map안에 담겨있을꺼임  //조건에 맞는것이 없다면 null이 올거임
+		
+		String message = ""; //로그인 성공 실패 여부 메시지
+		String result = ""; //로그인 성공 실패 여부
+//		String message = (member != null) ? "로그인 성공!" : "패스워드를 확인해주세요";
+//		String result  =  (member != null) ? "success" : "fail";
+		
+		if(member !=  null && member.getCnt() >= 5) {
+			message = "암호는 맞지만...(이미 비밀번호를 5회이상 잘못입력하셨습니다)";
+			result = "fail";
+		} else if(member !=  null) {
+			//cnt값 0으로 초기화
+			memberMapper.cntInit(map);
+			message = "로그인 성공!";
+			result = "success";
+			session.setAttribute("sessionId", member.getUserId());
+			session.setAttribute("sessionName", member.getName());
+			session.setAttribute("sessionStatus", member.getStatus());
+			if(member.getStatus().equals("A")) {
+				resultMap.put("url", "/mgr/member/list.do");
+			} else {
+				resultMap.put("url", "/main.do");
+			}
+			
+		} else {
+			Member idCheck = memberMapper.memberCheck(map);
+			if(idCheck != null) {
+				
+				if(idCheck.getCnt() >=5) {
+					message = "비밀번호를 5회이상 잘못입력하셨습니다";
+				}else {
+					//로그인 실패시 cnt 1증가
+					memberMapper.cntIncrease(map);
+					message = "패스워드를 확인해주세요";
+				}
+				
+		
+				
+			} else {
+				message = "아이디가 존재하지 않습니다.";
+			}
+		}
+		
+		resultMap.put("msg", message);
+		resultMap.put("result", result);
+
+		return resultMap;
+	}
+	
+	
 
 	public HashMap<String, Object> check(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -149,14 +144,14 @@ public class MemberService {
 	public HashMap<String, Object> memberInsert(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-
-		// 이쯤에서 해시 처리
+		
+		//이쯤에서 해시 처리
 		System.out.println(map);
 		map.get("pwd"); // 값꺼내기
 		// 3-1. 비밀번호 암호화(해시)
 		String hashPwd = passwordEncoder.encode((String) map.get("pwd"));
 		map.put("hashPwd", hashPwd);
-
+		
 		int cnt = memberMapper.memberAdd(map); // 아이디 패스워드가 map안에 담겨있을꺼임
 		if (cnt < 1) {
 			resultMap.put("result", "fail");
@@ -176,6 +171,8 @@ public class MemberService {
 		int cnt = memberMapper.insertMemberImg(map);
 	}
 
+
+
 	public HashMap<String, Object> getMemberList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -188,26 +185,30 @@ public class MemberService {
 			resultMap.put("result", "fail");
 			System.out.println(e.getMessage());
 		}
-
+		
+		
+		
 //		int cnt = memberMapper.selectMemberCnt(map);
 //		resultMap.put("cnt", cnt);
 //		System.out.println("프론트에 돌려주기전 멤버관련 resultMap에 머가 들었나~?" + resultMap);
-
+		
 		return resultMap;
 	}
+
+
 
 	public HashMap<String, Object> removeCnt(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			memberMapper.cntInit(map);
+			 memberMapper.cntInit(map);
 			resultMap.put("result", "success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			resultMap.put("result", "fail");
 			System.out.println(e.getMessage());
 		}
-
+		
 		return resultMap;
 	}
 }

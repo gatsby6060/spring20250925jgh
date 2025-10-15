@@ -97,6 +97,11 @@
 			<artifactId>sdk</artifactId>
 			<version>4.3.0</version>
 		</dependency>
+		<!--1. 의존성 주입(pom.xml)251015 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

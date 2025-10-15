@@ -92,6 +92,8 @@ public class MemberController {
 	public String memberadd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println("서버에 도착한 map 정보" + map);
+		
+		
 		resultMap = memberService.memberInsert(map);
 
 		return new Gson().toJson(resultMap);
