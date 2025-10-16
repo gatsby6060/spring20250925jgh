@@ -15,27 +15,7 @@
 			resultType="com.example.test1.model.Bbs">
 		select * 
 		from TBL_BBS
-		ORDER BY BBS_NUM DESC
-		OFFSET #{page} ROW FETCH NEXT #{pageSize} ROWS ONLY
-	</select>
-	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
-       SELECT
-			B.*, 
-            DECODE( TO_CHAR(CDATETIME, 'YYYY-MM-DD'), 
-            TO_CHAR(SYSDATE, 'YYYY-MM-DD'), 
-            TO_CHAR(CDATETIME,'HH24:MI:SS') , 
-            TO_CHAR(CDATETIME, 'YYYY-MM-DD') )  AS CDATE,
-            NVL(CCNT, 0) AS COMMENTCNT
-		FROM TBL_BOARD B
-        LEFT JOIN (
-            SELECT BOARDNO, COUNT(*) AS CCNT
-            FROM TBL_COMMENT
-            GROUP BY BOARDNO
-        ) T ON T.BOARDNO = B.BOARDNO
-		WHERE 1=1	
-		<if test = "kind != '' and kind != null">
-			AND KIND = #{kind}
-		</if>
+		where 1=1
 		<if test = "searchOption == 'all'">
 			AND (TITLE LIKE '%'||#{keyword} ||'%' OR
 			USERID LIKE '%'||#{keyword} || '%'
@@ -44,25 +24,30 @@
 		<if test = "searchOption == 'title'">
 			AND TITLE LIKE '%'||#{keyword} ||'%'
 		</if>
-		<if test = "searchOption == 'id'">
+		<if test = "searchOption == 'iddd'">
 			AND USERID LIKE '%'||#{keyword} ||'%'
 		</if>
-
-		<if test = "order == 'time' ">
-			ORDER BY B.CDATETIME DESC
-		</if>
-		<if test = "order == 'num' ">
-			ORDER BY B.BOARDNO ASC
-		</if>
-		<if test = "order == 'title' ">
-			ORDER BY TITLE ASC
-		</if>
-		<if test = "order == 'cnt' ">
-			ORDER BY CNT DESC
-		</if>
+		ORDER BY BBS_NUM DESC
 		OFFSET #{page} ROW FETCH NEXT #{pageSize} ROWS ONLY
-
 	</select>
+	
+	<select id="selectBbsCnt" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*)
+		FROM TBL_BBS B
+		WHERE 1=1	
+		<if test = "searchOption == 'all'">
+			AND (TITLE LIKE '%'||#{keyword} ||'%' OR
+			USERID LIKE '%'||#{keyword} || '%'
+			)
+		</if>
+		<if test = "searchOption == 'title'">
+			AND TITLE LIKE '%'||#{keyword} ||'%'
+		</if>
+		<if test = "searchOption == 'iddd'">
+			AND USERID LIKE '%'||#{keyword} ||'%'
+		</if>
+	</select>
+	
 	
 	
 	
@@ -105,5 +90,16 @@
 		WHERE BBS_NUM = #{bbsNum}
 	</update>
 	
+	
+	<insert id = "insertBbsImg" parameterType="hashmap">
+		INSERT INTO TBL_BOARD_FILE
+		VALUES(FILE_SEQ.NEXTVAL, #{bbsNum}, #{path}, #{filename}, #{orgName}, #{size, javaType=long, jdbcType=NUMERIC}, #{ext})
+	</insert>
+	
+	<select id="selectFileList" parameterType="hashmap" resultType="com.example.test1.model.Board">
+		SELECT *
+		FROM TBL_BOARD_FILE
+		WHERE BOARDNO = #{bbsNum}
+	</select>
 </mapper>
 

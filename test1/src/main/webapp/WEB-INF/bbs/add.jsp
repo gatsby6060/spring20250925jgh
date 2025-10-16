@@ -97,16 +97,41 @@
                         type: "POST",
                         data: param,
                         success: function (data) {
+                            if (data.result == "success") {
                             alert("성공은 한듯");
 
-                            // var form = new FormData();
-                            // form.append("file1", $("#file1")[0].files[0]);
-                            // form.append("boardNo", data.boardNo); // 임시 pk
-                            // self.upload(form);
-                            //location.href = "board-list.do";
+                            var form = new FormData();
+                            form.append("file1", $("#file1")[0].files[0]);
+                            form.append("bbsNum", data.bbsNum); // 임시 pk
+                            // alert("data는 "+JSON.stringify(data));
+                            alert("data.bbsNum는 "+data.bbsNum);
+                            self.upload(form);
+                            location.href = "/bbs/list.do";
+                            } else {
+                                alert("오류가 발생했습니다.");
+                            }
+
                         }
                     });
-                }
+                },
+
+                                // 파일 업로드
+                upload: function (form) {
+                    var self = this;
+                    alert("upload()호출");
+                    $.ajax({
+                        url: "/bbs/fileUpload.dox"
+                        , type: "POST"
+                        , processData: false
+                        , contentType: false
+                        , data: form
+                        , success: function (data) {
+                            console.log(data);
+                            alert("이미지까지 입력되었습니다.");
+                        }
+                    });
+                },
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분
@@ -115,23 +140,23 @@
 
 
                 // Quill 에디터 초기화
-                var quill = new Quill('#editor', {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                            ['bold', 'italic', 'underline'],
-                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                            ['link', 'image'],
-                            ['clean']
-                        ]
-                    }
-                });
+                // var quill = new Quill('#editor', {
+                //     theme: 'snow',
+                //     modules: {
+                //         toolbar: [
+                //             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                //             ['bold', 'italic', 'underline'],
+                //             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                //             ['link', 'image'],
+                //             ['clean']
+                //         ]
+                //     }
+                // });
 
                 // 에디터 내용이 변경될 때마다 Vue 데이터를 업데이트
-                quill.on('text-change', function () {
-                    self.contents = quill.root.innerHTML;
-                });
+                // quill.on('text-change', function () {
+                //     self.contents = quill.root.innerHTML;
+                // });
             }
         });
 

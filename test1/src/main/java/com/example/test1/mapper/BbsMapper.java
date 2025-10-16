@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.test1.model.Bbs;
+import com.example.test1.model.Board;
 
 
 @Mapper
@@ -21,5 +22,12 @@ public interface BbsMapper {
 	Bbs selectBbs(HashMap<String, Object> map);
 
 	int updateBbs(HashMap<String, Object> map);
+
+	int selectBbsCnt(HashMap<String, Object> map);
+
+	//첨부파일(이미지) 업로드
+	int insertBbsImg(HashMap<String, Object> map);
+	
+	List<Board> selectFileList(HashMap<String, Object> map);
 
 }

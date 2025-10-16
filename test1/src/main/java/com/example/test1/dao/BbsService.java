@@ -21,13 +21,13 @@ public class BbsService {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		List<Bbs> list = bbsMapper.selectBbsList(map);
-//		int cnt = BbsMapper.selectBbsList(map);
+		int cnt = bbsMapper.selectBbsCnt(map);
 
 		resultMap.put("list", list);
-//		resultMap.put("cnt", cnt);
+		resultMap.put("cnt", cnt);
 //		resultMap.put("result", "success");
 
-		System.out.println("프론트에 돌려주기전 resultMap에 머가 들었나~?" + resultMap);
+		System.out.println("BbsService클래스, 프론트에 돌려주기전 resultMap에 머가 들었나~?" + resultMap);
 
 		return resultMap;
 	}
@@ -65,10 +65,10 @@ public class BbsService {
 
 //		List<Comment> commentList = bbsMapper.selectCommentList(map);
 //
-//		List<Board> fileList = bbsMapper.selectFileList(map);
+		List<Board> fileList = bbsMapper.selectFileList(map);
 
-//		System.out.println("서비스에서 fileList에 값 넣기직전 fileList는 " + fileList);
-//		resultMap.put("fileList", fileList);
+		System.out.println("서비스에서 fileList에 값 넣기직전 fileList는 " + fileList);
+		resultMap.put("fileList", fileList);
 		resultMap.put("info", bbs);
 //				System.out.println("서비스에서 commentlist에 값 넣기직전 info는 " + board );
 //		resultMap.put("commentList", commentList);
@@ -84,6 +84,22 @@ public class BbsService {
 		resultMap.put("info", info);
 		resultMap.put("result", "success");
 		
+		return resultMap;
+	}
+
+	public HashMap<String, Object> addBbsImg(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		try {
+			int cnt = bbsMapper.insertBbsImg(map);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+
 		return resultMap;
 	}
 

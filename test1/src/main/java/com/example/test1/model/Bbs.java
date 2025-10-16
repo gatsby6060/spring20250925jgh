@@ -21,4 +21,6 @@ public class Bbs {
 	private String     fileOrgName ;
 	private String     fileSize ;
 	private String     fileEtc ;
+	
+	private String cnt;
 }

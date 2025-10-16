@@ -107,12 +107,12 @@
 	
 	<insert id="insertProductFile" parameterType="hashmap">
 		INSERT INTO tbl_food_img (FOODFILE_NO, FOOD_NO, FILEPATH, FILENAME, FILEORGNAME, FILESIZE, FILEETC, THUMBNAILYN)
-		VALUES (FOODFILE_SEQ.NEXTVAL, #{foodNo}, #{filePath}, #{fileName}, #{fileOrgName}, #{fileSize}, #{fileEtc}, 'Y')
+		VALUES (FOODFILE_SEQ.NEXTVAL, #{foodNo}, #{filePath}, #{fileName}, #{fileOrgName}, #{fileSize,javaType=long , jdbcType=NUMERIC}, #{fileEtc}, 'Y')
 	</insert>
 	
 	<insert id = "insertFoodImg" parameterType="hashmap">
 		INSERT INTO TBL_FOOD_IMG
-		VALUES(FOODFILE_SEQ.NEXTVAL, #{foodNo}, #{path}, #{filename}, #{orgName}, #{size}, #{ext}, 'Y')
+		VALUES(FOODFILE_SEQ.NEXTVAL, #{foodNo}, #{path}, #{filename}, #{orgName}, #{size,javaType=long , jdbcType=NUMERIC}, #{ext}, 'Y')
 	</insert>
 	
 	

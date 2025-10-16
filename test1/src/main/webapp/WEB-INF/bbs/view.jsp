@@ -36,7 +36,7 @@
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-            {{sessionId}}님 환영합니다. 상세 보기 페이지 
+            {{sessionId}}님 환영합니다. 상세 보기 페이지
             {{bbsNum}}
             bbs의 add.jsp파일입니다.
             <div>
@@ -55,9 +55,13 @@
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td>
+                        <td style=" width:500px; ">
+                            <img v-for="item in fileList" :src="item.filePath"><br>
+                            <br>
                             <!-- <div v-html="info.contents2"></div> -->
-                            <div v-html="info.contents"></div>
+                            <div v-html="info.contents"
+                                style="white-space: pre-line; text-align:left; min-height:200px; width:100%; padding:10px;">
+                            </div>
                         </td>
 
                         <!-- <td>
@@ -103,13 +107,14 @@
                     // commentList: [], //중요! for에서...뽑아서 돌리려면...
                     // sessionId: "${sessionId}",
                     // contents : "",///
-                    // fileList: [],
+                   
+                    fileList: [],
 
                 };
             },
             methods: {
                 // 함수(메소드) - (key : function())
-                fnInfo : function () {
+                fnInfo: function () {
                     let self = this;
                     let param = {
                         bbsNum: self.bbsNum
@@ -120,20 +125,20 @@
                         type: "POST",
                         data: param,
                         success: function (data) {
-
+                            alert(JSON.stringify(data)); 
                             // alert(JSON.stringify(data)); //댓글 등록이나 삭제도 시간 나면 ㄱㄱ
                             // console.log(data.commentList); //요런 형식으로 찍어야 잘보임 얼럿창 보단 이게 나은듯
 
                             self.info = data.info;
                             // self.commentList = data.commentList;
-                            // self.fileList = data.fileList;
+                            self.fileList = data.fileList;
                         }
                     });
                 },
 
-                fnUpate : function(bbsNum){
+                fnUpate: function (bbsNum) {
                     alert("/bbs/bbs-update.do로 bbsNum넘겨줌 " + bbsNum);
-                    pageChange("/bbs/bbs-update.do", {bbsNum : bbsNum});
+                    pageChange("/bbs/bbs-update.do", { bbsNum: bbsNum });
                 },
 
             }, // methods

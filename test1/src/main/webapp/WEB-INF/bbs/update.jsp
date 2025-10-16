@@ -35,7 +35,7 @@
     <body>
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-            {{sessionId}}님 환영합니다. 수정페이지입니다. 
+            {{sessionId}}님 환영합니다. 수정페이지입니다.
             bbsNum은 {{bbsNum}} 는
             bbs의 update.jsp파일입니다.
             <div>
@@ -57,7 +57,9 @@
                         <td>
                             <!-- <div v-html="info.contents2"></div> -->
                             <!-- <div v-html="info.contents"></div> -->
-                            <input type="text" v-model="info.contents">
+                            <!-- <input type="textarea" v-model="info.contents"> -->
+                            <textarea v-model="info.contents" rows="10" cols="80"
+                                style="width:100%; height:300px; resize: vertical;"></textarea>
                         </td>
 
                         <!-- <td>
@@ -109,7 +111,7 @@
             },
             methods: {
                 // 함수(메소드) - (key : function())
-                fnInfo : function () {
+                fnInfo: function () {
                     let self = this;
                     let param = {
                         bbsNum: self.bbsNum
@@ -134,7 +136,7 @@
                 fnUpatePerfect: function (bbsNum) {
                     let self = this;
                     let param = {
-                        bbsNum: bbsNum, 
+                        bbsNum: bbsNum,
                         contents: self.info.contents,
                         title: self.info.title,
                     };

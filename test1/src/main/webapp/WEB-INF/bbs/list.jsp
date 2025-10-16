@@ -28,6 +28,18 @@
             tr:nth-child(even) {
                 background-color: azure;
             }
+
+
+
+            #index {
+                margin-right: 5px;
+                text-decoration: none;
+            }
+
+            .active {
+                color: black;
+                font-weight: bold;
+            }
         </style>
     </head>
 
@@ -36,7 +48,18 @@
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
             <div>
+                <select v-model="searchOption">
+                    <option value="all">:: 전체 ::</option>
+                    <option value="title">:: 제목 ::</option>
+                    <option value="iddd">:: 작성자 ::</option>
+                </select>
+                <input v-model="keyword">
+                <button @click="fnList">검색</button>
+            </div>
+
+            <div>
                 <select v-model="pageSize" @change="fnList">
+                    <option value="3">3개씩</option>
                     <option value="5">5개씩</option>
                     <option value="10">10개씩</option>
                     <option value="20">20개씩</option>
@@ -87,7 +110,7 @@
                 <a v-if="page>=2" href="javascript:;" @click="fnPage(page-1)">◀</a>
                 <a else></a>
                 <a @click="fnPage(num)" id="index" href="javascript:;" v-for="num in index">
-                    <span :class="{active : page == num}">{{num}}</span>
+                    <span :class="{active : page == num}"> {{num}} </span>
                     <!-- <span v-if="num==page" class="active">{{num}}</span>
                         <span v-else>{{num}}</span> -->
                 </a>
@@ -124,13 +147,24 @@
                     page: 1, //현재페이지
                     index: 0, // 최대 페이지 값
 
+                    searchOption: "all", // 검색옵션 (기본: 전체) title iddd 더 있음
+                    keyword: "", //검색어
                 };
             },
+
             methods: {
                 // 함수(메소드) - (key : function())
                 fnList: function () {
                     let self = this;
-                    let param = {};
+                    let param = {
+                        pageSize : self.pageSize,
+                        page : self.page,
+                        index : self.index,
+                        searchOption : self.searchOption,
+                        keyword: self.keyword, //검색어
+
+                        page: (self.page - 1) * self.pageSize, //이래야 최신글이 잘보임... 없으면 최신글만 리스트에서 조회 안됨
+                    };
                     $.ajax({
                         url: "/bbs-list.dox",
                         dataType: "json",
@@ -173,7 +207,15 @@
                     pageChange("/bbs/view.do", { bbsNum: bbsNum });
                 },
 
+                fnPage: function (num) {
+                    let self = this;
+                    // alert("페이징 숫자 클릭됨 " + num);
+                    self.page = num;
+                    self.fnList();
+                },
+
             }, // methods
+
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
