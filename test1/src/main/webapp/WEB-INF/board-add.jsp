@@ -52,13 +52,20 @@
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td><textarea v-model="contents" cols="50" rows="20"></textarea></td>
+                        <!-- <td><textarea v-model="contents" cols="50" rows="20"></textarea></td> -->
+                        
                         <!-- <td><textarea v-model="contents" cols="50" rows="20"></textarea></td> -->
                         <!-- <td>
                             <div id="editor" v-model="contents"
                                 style="width:100%; height:400px; border:1px solid #ccc; padding:10px;">
                             </div>
                         </td> -->
+
+                        <td>
+                            <div id="editor" style="width:100%; height:200px; border:1px solid #ccc; padding:10px;">
+
+                            </div>
+                        </td>
                     </tr>
                 </table>
                 <div>

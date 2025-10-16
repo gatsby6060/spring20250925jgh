@@ -118,8 +118,6 @@
 		WHERE USERID = #{userId}
 	</update>
 	
-	
-	
 	<select id="checkPwd" parameterType="hashmap" resultType="com.example.test1.model.Member">
 		SELECT *
 		FROM TBL_USER
@@ -127,6 +125,8 @@
 		AND USERID = #{userId}
 		AND PASSWORD = #{hashPwd} 
 	</select>
+	
+
 </mapper>
 
 

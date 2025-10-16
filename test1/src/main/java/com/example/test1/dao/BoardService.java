@@ -49,8 +49,9 @@ public class BoardService {
 	public HashMap<String, Object> addBoard(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("서버로 들어온 데이터 확인 addBoard " + map);
 		int cnt = boardMapper.insertBoard(map);
-
+		
 		resultMap.put("boardNo", map.get("boardNo"));
 		resultMap.put("result", "success");
 		return resultMap;

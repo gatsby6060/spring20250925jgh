@@ -38,4 +38,6 @@ public interface ProductMapper {
 //	
 //	List<Product> foodImgList(HashMap<String, Object> map);
 	
+	int insertPayHistory(HashMap<String, Object> map);
+	
 }

@@ -9,6 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
         <style>
             table,
             tr,
@@ -64,6 +65,7 @@
     </html>
 
     <script>
+        IMP.init("imp03303441"); // 예: imp00000000
         const app = Vue.createApp({
             data() {
                 return {
@@ -105,8 +107,9 @@
                             // alert(JSON.stringify(data));
                             console.log(data);
                             if (data.result == "success") { //식빵 이거 문자임 '' 붙여야함
-                                alert("인증되었습니다. 다음 페이지 단계 보이게 하기 authFlg = true");
-                                self.authFlg = true
+                                // alert("인증되었습니다. 다음 페이지 단계 보이게 하기 authFlg = true");
+                                self.fnCertification();// 이건 포트원으로 가는 함수 같음....
+                                // self.authFlg = true
                             } else {
                                 alert("사용자 정보를 찾을 수 없습니다. 다음 페이지 안!!!! 보이게 하기 authFlg = false");
                                 self.authFlg = false
@@ -114,6 +117,8 @@
                         }
                     });
                 },
+ 
+                //아래꺼fnUpdatePwd 안씀         선생님꺼fnChangePwd이거씀
                 fnUpdatePwd: function () {
                     let self = this;
 
@@ -191,6 +196,32 @@
                     });
                 },
 
+                fnCertification: function () {
+                    // IMP.certification(param, callback) 호출
+                    let self = this;
+                    IMP.certification(
+                        {
+                            // param
+                            channelKey: "channel-key-1f39c4ce-5f29-446f-b2c3-2c4c6d6b1a24",
+                            merchant_uid: "merchant_" + new Date().getTime(), //주문 번호  //"ORD20180131-0000011", // 주문 번호
+                            // m_redirect_url: "{리디렉션 될 URL}", // 모바일환경에서 popup:false(기본값) 인 경우 필수, 예: https://www.myservice.com/payments/complete/mobile
+                            // popup: false, // PC환경에서는 popup 파라미터가 무시되고 항상 true 로 적용됨
+                        },
+                        function (rsp) {
+                            // callback
+                            if (rsp.success) {
+                                // 인증 성공 시 로직
+                                alert("fnCertification() 인증 성공!");
+                                console.log(rsp);
+                                self.authFlg = true;
+                            } else {
+                                // 인증 실패 시 로직
+                                alert("fnCertification() 인증 실패!");
+                                console.log(rsp);
+                            }
+                        },
+                    );
+                },
 
 
             }, // methods

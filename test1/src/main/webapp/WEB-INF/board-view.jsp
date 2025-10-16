@@ -42,7 +42,8 @@
                     <th>내용</th>
                     <td>
                         <img v-for="item in fileList" :src="item.filePath"><br>
-                        {{info.contents}}
+                        <br>
+                        <div v-html="info.contents2"></div>
                     </td>
                 </tr>
             </table>
@@ -51,7 +52,7 @@
             <table id = "comment">
                 <tr v-for="item in commentList">
                     <th>{{item.nickName}}</th>
-                    <td>{{item.contents}}</td>
+                    <td>{{item.contents2}}</td>
                     <td><button>삭제</button></td>
                     <td><button>수정</button></td>
                 </tr>

@@ -275,4 +275,15 @@ public class ProductController {
 //        return new Gson().toJson(resultMap);
 //    }
 	
+	
+	@RequestMapping(value = "/product/paymenthi.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+    public String payhis(Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		System.out.println("/product/payhis.dox진입~");
+		System.out.println("서버에 도착한 map은 " + map);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.addPayHistory(map);
+        return new Gson().toJson(resultMap);
+    }
+	
 }

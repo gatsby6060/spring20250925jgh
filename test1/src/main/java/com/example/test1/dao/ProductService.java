@@ -197,5 +197,21 @@ public class ProductService {
 //		
 //		return resultMap;
 //	}
+	
+	
+	public HashMap<String, Object> addPayHistory(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			System.out.println("결제히스토리테이블에 인서트하기 직전 map값 "+map);
+			productMapper.insertPayHistory(map);
+			resultMap.put("result", "success");
+//			resultMap.put("cnt", cnt);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("error", e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		return resultMap;
+	}
 
 }
