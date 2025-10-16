@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test1.mapper.BbsMapper">
+
+	<select id="selectBbsList" parameterType="hashmap" 
+			resultType="com.example.test1.model.Bbs">
+		select * 
+		from TBL_BBS
+		ORDER BY BBS_NUM DESC
+	</select>
+	
+	
+	<insert id = "insertBbs" 
+			parameterType="hashmap" 
+			useGeneratedKeys="true" 
+			keyColumn="BBS_NUM" 
+			keyProperty="bbsNum">
+		INSERT INTO TBL_BBS 
+		VALUES (
+        BBS_SEQ.NEXTVAL, 
+        #{title}, 
+        #{contents}, 
+        0, 
+        #{userId},
+        SYSDATE, 
+        SYSDATE )
+        
+	</insert>
+	
+	<delete id="deleteBbsList" parameterType="hashmap">
+		DELETE FROM TBL_BBS
+		WHERE BBS_NUM = #{selectItem}
+			
+	</delete>
+	
+	
+	<select id="selectBbs" parameterType="hashmap" resultType="com.example.test1.model.Bbs">
+		SELECT B.*
+		FROM TBL_BBS B
+		WHERE B.BBS_NUM = #{bbsNum}
+	</select>
+	
+	
+	
+	<update id="updateBbs" parameterType="hashmap">
+		UPDATE TBL_BBS 
+		SET TITLE = #{title}, CONTENTS = #{contents}
+		WHERE BBS_NUM = #{bbsNum}
+	</update>
+	
+</mapper>
+

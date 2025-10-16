@@ -44,9 +44,16 @@ public class BoardController {
 	public String view(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map)
 			throws Exception {
 //		System.out.println(map.get("boardNo"));
-		request.setAttribute("boardNo", map.get("boardNo"));
-		return "/board-view";
+		request.setAttribute("boardNo", map.get("boardNo")); //파라미터를 여기 컨트롤러에서 합체?시킴
+		//여기서 파라미터를 합쳐서 /board-view.jsp에 넘겨줌
+		return "/board-view"; //파라미터와 함께 넘겨줌
 	}
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping(value = "/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -181,5 +188,8 @@ public class BoardController {
 
 		return fileName;
 	}
+	
+	
+	
 
 }
