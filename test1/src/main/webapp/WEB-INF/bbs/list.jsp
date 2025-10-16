@@ -118,6 +118,12 @@
                     status: "${sessionStatus}",
                     list: [],
                     selectItem: [],
+
+
+                    pageSize: 5, // 한페이지에 출력할 개수
+                    page: 1, //현재페이지
+                    index: 0, // 최대 페이지 값
+
                 };
             },
             methods: {
@@ -132,7 +138,10 @@
                         data: param,
                         success: function (data) {
                             // alert("어쩃든 성공" + JSON.stringify(data));
+                            // self.list = data.list;
+                            console.log(data);
                             self.list = data.list;
+                            self.index = Math.ceil(data.cnt / self.pageSize);
                         }
                     });
                 },
