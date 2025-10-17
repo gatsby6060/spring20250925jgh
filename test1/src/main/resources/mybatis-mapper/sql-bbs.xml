@@ -4,18 +4,18 @@
 
 <mapper namespace="com.example.test1.mapper.BbsMapper">
 
-	<select id="selectBbsList_bak" parameterType="hashmap" 
+	<select id="selectBbsList_bak1" parameterType="hashmap" 
 			resultType="com.example.test1.model.Bbs">
 		select * 
 		from TBL_BBS
 		ORDER BY BBS_NUM DESC
 	</select>
 	
-	<select id="selectBbsList" parameterType="hashmap" 
+	<select id="selectBbsList_bak2" parameterType="hashmap" 
 			resultType="com.example.test1.model.Bbs">
 		SELECT * 
 		from TBL_BBS
-		where 1=1
+		where 1=1		
 		<if test = "searchOption == 'all'">
 			AND (TITLE LIKE '%'||#{keyword} ||'%' OR
 			USERID LIKE '%'||#{keyword} || '%'
@@ -30,6 +30,23 @@
 		ORDER BY BBS_NUM DESC
 		OFFSET #{page} ROW FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
+	
+	<select id="selectBbsList" parameterType="hashmap" 
+			resultType="com.example.test1.model.Bbs">
+		SELECT * 
+		from TBL_BBS
+		where (TITLE LIKE '%' || #{keyword} || '%' 
+			    OR USERID LIKE '%' || #{keyword} || '%')
+		OFFSET #{page} ROW FETCH NEXT #{pageSize} ROWS ONLY
+	</select>
+	
+	<select id="selectBbsListCnt" parameterType="hashmap" resultType="int">
+        SELECT count(*) 
+		from TBL_BBS
+		where (TITLE LIKE '%' || #{keyword} || '%' 
+			    OR USERID LIKE '%' || #{keyword} || '%')
+	</select>
+	
 	
 	<select id="selectBbsCnt" parameterType="hashmap" resultType="int">
         SELECT COUNT(*)
@@ -91,7 +108,9 @@
 	
 	<update id="updateBbs" parameterType="hashmap">
 		UPDATE TBL_BBS 
-		SET TITLE = #{title}, CONTENTS = #{contents}
+		SET 
+			TITLE = #{title}, 
+			CONTENTS = #{contents}
 		WHERE BBS_NUM = #{bbsNum}
 	</update>
 	

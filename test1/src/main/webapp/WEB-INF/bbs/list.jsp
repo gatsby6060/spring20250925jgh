@@ -53,7 +53,8 @@
                     <option value="title">:: 제목 ::</option>
                     <option value="iddd">:: 작성자 ::</option>
                 </select>
-                <input v-model="keyword">
+                <!--@keyup.enter ="fnlist" type="text"-->
+                <input v-model="keyword"  placeholder="검색어를 입력해주세요">
                 <button @click="fnList">검색</button>
             </div>
 
@@ -62,7 +63,7 @@
                     <option value="3">3개씩</option>
                     <option value="5">5개씩</option>
                     <option value="10">10개씩</option>
-                    <option value="20">20개씩</option>
+                    <!-- <option value="20">20개씩</option> -->
                 </select>
             </div>
 
@@ -112,14 +113,16 @@
             </table>
             <div>
                 <a v-if="page!=1" @click="fnMove(-1)" href="javascript:;">←</a>
-                <a v-if="page>=2" href="javascript:;" @click="fnPage(page-1)">◀</a>
+                <a v-if="page>=2" href="javascript:;" @click="fnMove(page-1)">◀</a>
                 <a else></a>
-                <a @click="fnPage(num)" id="index" href="javascript:;" v-for="num in index">
+                
+                <a @click="fnMove(num)" id="index" href="javascript:;" v-for="num in index">
                     <span :class="{active : page == num}"> {{num}} </span>
                     <!-- <span v-if="num==page" class="active">{{num}}</span>
                         <span v-else>{{num}}</span> -->
                 </a>
-                <a v-if="page!=index" href="javascript:;" @click="fnPage(page+1)">▶</a>
+
+                <a v-if="page!=index" href="javascript:;" @click="fnMove(page+1)">▶</a>
                 <a v-else></a>
                 <a v-if="page!=index" @click="fnMove(1)" href="javascript:;">→</a>
             </div>
@@ -148,9 +151,9 @@
                     // selectItem: [],  //라디오버튼 클릭시 값 들어옴
                     selectItem: "",  //라디오버튼 클릭시 값 들어옴
 
-                    pageSize: 5, // 한페이지에 출력할 개수
-                    page: 1, //현재페이지
-                    index: 0, // 최대 페이지 값
+                    pageSize: 5, // 한페이지에 출력할 개수 기본 5개씩...
+                    page: 1, //현재페이지 ex)12345678
+                    index: 0, // 최대 페이지 값 ex)8
 
                     searchOption: "all", // 검색옵션 (기본: 전체) title iddd 더 있음
                     keyword: "", //검색어
@@ -203,6 +206,8 @@
                         success: function (data) {
 
                             alert("성공 체크된것 삭제되었습니다.");
+                            self.searchOption="";
+                            self.page = 1;
                             self.fnList();
 
                         }
@@ -211,11 +216,19 @@
 
                 fnView: function (bbsNum) {
                     // console.log(boardNo);
+                    let self = this;
                     alert("상세보기로 bbsNum넘겨줌 " + bbsNum);
                     pageChange("/bbs/view.do", { bbsNum: bbsNum });
                 },
 
-                fnPage: function (num) {
+                // fnPage: function (num) { 
+                //     let self = this;
+                //     // alert("페이징 숫자 클릭됨 " + num);
+                //     self.page = num;
+                //     self.fnList();
+                // },
+
+                fnMove: function (num) { //내가 누른 숫자 num
                     let self = this;
                     // alert("페이징 숫자 클릭됨 " + num);
                     self.page = num;

@@ -117,7 +117,7 @@
                         bbsNum: self.bbsNum
                     };
                     $.ajax({
-                        url: "/bbs/bbs-view.dox",
+                        url: "/bbs/view.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
@@ -141,7 +141,7 @@
                         title: self.info.title,
                     };
                     $.ajax({
-                        url: "/bbs/bbs-update.dox",
+                        url: "/bbs/edit.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,

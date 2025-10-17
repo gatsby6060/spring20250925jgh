@@ -43,19 +43,19 @@ public class BbsController {
 			throws Exception {
 		System.out.println("/bbs/view.do 컨트롤러 도착");
 
-		request.setAttribute("bbsNum", map.get("bbsNum"));
+		request.setAttribute("bbsNum", map.get("bbsNum")); //프론트에서 키bbsNum으로 값을 넘겨준것을 get으로 뽑아옴
 
 		return "/bbs/view"; //
 	}
 
-	@RequestMapping("/bbs/bbs-update.do")
+	@RequestMapping("/bbs/edit.do")
 	public String bbsupdate(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map)
 			throws Exception {
 		System.out.println("/bbs/bbs-update.do 컨트롤러 도착");
-
+		System.out.println("map.get(\"bbsNum\")은 " + map.get("bbsNum"));
 		request.setAttribute("bbsNum", map.get("bbsNum"));
 
-		return "/bbs/update"; //
+		return "/bbs/edit"; //
 	}
 
 	@RequestMapping(value = "/bbs-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -111,7 +111,7 @@ public class BbsController {
 		return new Gson().toJson(resultMap);
 	}
 
-	@RequestMapping(value = "/bbs/bbs-view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/bbs/view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String bbsview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -121,12 +121,12 @@ public class BbsController {
 		return new Gson().toJson(resultMap);
 	}
 
-	@RequestMapping(value = "/bbs/bbs-update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/bbs/edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String bbsupdate(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String bbseditBbs(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println("/bbs/bbs-update.dox임 들어온 map은 " + map); // 프론트에서 보내줘야 받을수 있음
-		resultMap = bbsService.updateBbs(map);
+		resultMap = bbsService.editBbs(map);
 		System.out.println("/bbs/bbs-update.dox임 resultMap은 " + resultMap.toString());
 
 		return new Gson().toJson(resultMap);
@@ -137,7 +137,7 @@ public class BbsController {
 			HttpServletRequest request, HttpServletResponse response, Model model) {
 		System.out.println("업로드컨트롤진입1");
 		String url = null;
-		String path = "c:\\img";
+		String path = "c:\\img"; //일단 안쓰는거 같은데... 일단유지중 251017 실제론 src main webapp img 
 		try {
 			System.out.println("업로드컨트롤진입2");
 			// String uploadpath = request.getServletContext().getRealPath(path);

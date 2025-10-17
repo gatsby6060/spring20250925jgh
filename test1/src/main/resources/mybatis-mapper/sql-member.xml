@@ -51,9 +51,21 @@
 		        SUBSTR(BIRTH, 3, 2) || '.' || SUBSTR(BIRTH, 5,2) || '.' || SUBSTR(BIRTH, 7, 2)
 		 	   ) CBIRTH
 		FROM TBL_USER U
+		OFFSET #{page} ROW FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
 
-	
+	<select id="selectMemberListCnt" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*)
+		FROM TBL_USER U
+		where 1=1
+		
+		<if test="keyword != null and keyword != ''">
+        AND (
+            NAME LIKE '%' || #{keyword} || '%'
+            OR USERID LIKE '%' || #{keyword} || '%'
+        )
+    	</if>
+	</select>
 	
 	<!--필요할것 같아서 그냥 만듬(251010)-->
 	<select id="selectMemberCnt" parameterType="hashmap" resultType="int">

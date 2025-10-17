@@ -70,13 +70,16 @@
                         pwd: self.pwd
                     };
                     $.ajax({
+                        //아래 서버 앤드포인트?로 가서 세션에 담아줌 그리고 받아올듯
                         url: "/member/login.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
-                            alert(data.msg);
+                            // alert(data.msg);
+                            alert(JSON.stringify(data));
                             if (data.result == "success") {
+                                
                                 location.href = "/main.do";
                                 location.href = data.url;
                             }

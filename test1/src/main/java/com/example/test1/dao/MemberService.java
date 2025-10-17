@@ -129,6 +129,7 @@ public class MemberService {
 					} else {
 						resultMap.put("url", "/main.do");
 					}
+					
 				}
 			} else {
 				// 아이디는 맞지만, 비밀번호가 다른 경우
@@ -251,7 +252,9 @@ public class MemberService {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			List<Member> list = memberMapper.selectMemberList(map);
+			int cnt = memberMapper.selectMemberListCnt(map);
 			resultMap.put("list", list);
+			resultMap.put("cnt", cnt); //검색된 총 인원수 개수
 			resultMap.put("result", "success");
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -83,7 +83,7 @@
                     <button @click="fnAdd">저장</button>
                 </div>
                 <div>
-                    <button @click="fnUpate(info.bbsNum)">수정</button>
+                    <button @click="fnEdit(info.bbsNum)">수정</button>
                 </div>
             </div>
 
@@ -101,13 +101,13 @@
                     contents: "",
                     title: "",
 
-                    bbsNum: "${bbsNum}", //request.getAttribute("test")......
+                    bbsNum: "${bbsNum}", //컨트롤러에서 뽑아온 값을 잘 jsp로 줬는지 확인해봄 request.getAttribute("test")......
                     // contents: "",//
                     info: "",
                     // commentList: [], //중요! for에서...뽑아서 돌리려면...
                     // sessionId: "${sessionId}",
                     // contents : "",///
-                   
+
                     fileList: [],
 
                 };
@@ -120,25 +120,31 @@
                         bbsNum: self.bbsNum
                     };
                     $.ajax({
-                        url: "/bbs/bbs-view.dox",
+                        url: "/bbs/view.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
-                            alert(JSON.stringify(data)); 
-                            // alert(JSON.stringify(data)); //댓글 등록이나 삭제도 시간 나면 ㄱㄱ
-                            // console.log(data.commentList); //요런 형식으로 찍어야 잘보임 얼럿창 보단 이게 나은듯
+                            if (data.result == "success") {
+                                alert(JSON.stringify(data));
+                                // alert(JSON.stringify(data)); //댓글 등록이나 삭제도 시간 나면 ㄱㄱ
+                                // console.log(data.commentList); //요런 형식으로 찍어야 잘보임 얼럿창 보단 이게 나은듯
 
-                            self.info = data.info;
-                            // self.commentList = data.commentList;
-                            self.fileList = data.fileList;
+                                self.info = data.info;
+                                // self.commentList = data.commentList;
+                                self.fileList = data.fileList;
+                            }
+                            else {
+                                alert("어딘가 에러")
+                            }
+
                         }
                     });
                 },
 
-                fnUpate: function (bbsNum) {
-                    alert("/bbs/bbs-update.do로 bbsNum넘겨줌 " + bbsNum);
-                    pageChange("/bbs/bbs-update.do", { bbsNum: bbsNum });
+                fnEdit: function (bbsNum) {
+                    alert("/bbs/edit.do로 bbsNum넘겨줌 " + bbsNum);
+                    pageChange("/bbs/edit.do", { bbsNum: bbsNum });
                 },
 
             }, // methods
@@ -150,23 +156,23 @@
 
 
                 // Quill 에디터 초기화
-                var quill = new Quill('#editor', {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                            ['bold', 'italic', 'underline'],
-                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                            ['link', 'image'],
-                            ['clean']
-                        ]
-                    }
-                });
+                // var quill = new Quill('#editor', {
+                //     theme: 'snow',
+                //     modules: {
+                //         toolbar: [
+                //             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                //             ['bold', 'italic', 'underline'],
+                //             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                //             ['link', 'image'],
+                //             ['clean']
+                //         ]
+                //     }
+                // });
 
                 // 에디터 내용이 변경될 때마다 Vue 데이터를 업데이트
-                quill.on('text-change', function () {
-                    self.contents = quill.root.innerHTML;
-                });
+                // quill.on('text-change', function () {
+                //     self.contents = quill.root.innerHTML;
+                // });
             }
         });
 

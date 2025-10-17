@@ -25,6 +25,7 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+        응 아무코드 없음 이게 정상임
     </div>
 </body>
 </html>

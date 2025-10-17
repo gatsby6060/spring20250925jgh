@@ -211,7 +211,7 @@ public class MemberController {
 		
 //		System.out.println("/mgr/member/list.dox 스프링서버 진입완료");
 		resultMap = memberService.getMemberList(map);
-
+		System.out.println("프론트로 돌려주기전 " + resultMap);
 		return new Gson().toJson(resultMap);
 	}
 	

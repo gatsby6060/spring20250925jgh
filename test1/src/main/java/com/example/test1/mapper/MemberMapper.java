@@ -29,6 +29,9 @@ public interface MemberMapper {
 	//회원 몰록(관리자)
 	List<Member> selectMemberList(HashMap<String, Object> map);
 
+	// 멤버 총 개수
+	int selectMemberListCnt(HashMap<String, Object> map); 
+	
 	//회원들 총 수
 	int selectMemberCnt(HashMap<String, Object> map);
 	
@@ -50,7 +53,9 @@ public interface MemberMapper {
 	//비밀번호 변경
 	int updatePwd(HashMap<String, Object> map);
 
-	int checkPwd(HashMap<String, Object> map); 
+	int checkPwd(HashMap<String, Object> map);
+
+
 
 	
 }
