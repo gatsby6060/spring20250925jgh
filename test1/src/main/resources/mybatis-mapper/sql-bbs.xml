@@ -13,7 +13,7 @@
 	
 	<select id="selectBbsList" parameterType="hashmap" 
 			resultType="com.example.test1.model.Bbs">
-		select * 
+		SELECT * 
 		from TBL_BBS
 		where 1=1
 		<if test = "searchOption == 'all'">
@@ -59,21 +59,26 @@
 			keyProperty="bbsNum">
 		INSERT INTO TBL_BBS 
 		VALUES (
-        BBS_SEQ.NEXTVAL, 
-        #{title}, 
-        #{contents}, 
-        0, 
-        #{userId},
-        SYSDATE, 
-        SYSDATE )
-        
+		        BBS_SEQ.NEXTVAL, 
+		        #{title}, 
+		        #{contents}, 
+		        0, 
+		        #{userId},
+		        SYSDATE, 
+		        SYSDATE 
+		        )
 	</insert>
+	
+	<delete id="deleteBbs" parameterType="hashmap">
+		DELETE FROM TBL_BBS
+		WHERE BBS_NUM = #{selectItem}
+	</delete>
 	
 	<delete id="deleteBbsList" parameterType="hashmap">
 		DELETE FROM TBL_BBS
 		WHERE BBS_NUM = #{selectItem}
-			
 	</delete>
+
 	
 	
 	<select id="selectBbs" parameterType="hashmap" resultType="com.example.test1.model.Bbs">

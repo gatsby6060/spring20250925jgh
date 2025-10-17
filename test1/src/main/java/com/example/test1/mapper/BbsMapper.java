@@ -15,7 +15,11 @@ public interface BbsMapper {
 	// 게시글 목록
 	List<Bbs> selectBbsList(HashMap<String, Object> map);
 
+	//게시글 삽입
 	int insertBbs(HashMap<String, Object> map);
+	
+	//게시글 삭제
+	int deleteBbs(HashMap<String, Object> map);
 
 	int deleteBbsList(HashMap<String, Object> map);
 

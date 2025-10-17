@@ -77,9 +77,9 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    userId: "${sessionId}",
-                    contents: "",
+                    userId: "${sessionId}", //로그인할 때 sessionId에 들어감
                     title: "",
+                    contents: "",
                 };
             },
             methods: {
@@ -92,13 +92,13 @@
                         contents: self.contents
                     };
                     $.ajax({
-                        url: "/bbs/bbs-add.dox",
+                        url: "/bbs/add.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
                             if (data.result == "success") {
-                            alert("성공은 한듯");
+                            alert("글 저장 성공");
 
                             var form = new FormData();
                             form.append("file1", $("#file1")[0].files[0]);
@@ -107,6 +107,7 @@
                             alert("data.bbsNum는 "+data.bbsNum);
                             self.upload(form);
                             location.href = "/bbs/list.do";
+                            
                             } else {
                                 alert("오류가 발생했습니다.");
                             }
@@ -127,7 +128,7 @@
                         , data: form
                         , success: function (data) {
                             console.log(data);
-                            alert("이미지까지 입력되었습니다.");
+                            alert("이미지까지 저장되었습니다.");
                         }
                     });
                 },

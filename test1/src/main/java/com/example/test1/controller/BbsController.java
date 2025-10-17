@@ -59,7 +59,7 @@ public class BbsController {
 	}
 
 	@RequestMapping(value = "/bbs-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
+	@ResponseBody //호출의 결과로 리턴으로 '데이터'를 넘겨주겠다 뜻
 	public String bbsList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		System.out.println("서버에 도착한 map" + map);
@@ -68,7 +68,7 @@ public class BbsController {
 		return new Gson().toJson(resultMap);
 	}
 
-	@RequestMapping(value = "/bbs/bbs-add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/bbs/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String bbsAdd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -78,6 +78,20 @@ public class BbsController {
 		return new Gson().toJson(resultMap);
 	}
 
+	
+	@RequestMapping(value = "/bbs/remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String bbsdelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		System.out.println("/bbs/delete.dox임 들어온 map은 " + map); // 프론트에서 보내줘야 받을수 있음
+
+		resultMap = bbsService.removeBbs(map);
+		System.out.println("/bbs/deleteList.dox임 프론트로 되돌려주기 직전 " + resultMap);
+
+		return new Gson().toJson(resultMap);
+	}
+	
 	@RequestMapping(value = "/bbs/deleteList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String bbsdeleteList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {

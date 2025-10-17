@@ -70,7 +70,8 @@
             세션상 {{sessionIdddd}}님 환영합니다. !
             <table>
                 <tr>
-                    <th><input type="checkbox" @click="fnAllCheck()"></th>
+                    <!-- <th><input type="checkbox" @click="fnAllCheck()"></th> -->
+                    <th>선택</th>
                     <th>글번호</th>
                     <th>제목</th>
                     <th>조회수</th>
@@ -83,14 +84,18 @@
                 <tr v-for="(item, index) in list">
                     <td>
                         <!-- {{index}} -->
-                        <input type="radio" :value="item.bbsNum" v-model="selectItem">
+                        <input type="radio" v-model="selectItem" :value="item.bbsNum">
                     </td>
                     <td>{{item.bbsNum}}</td>
                     <td>
                         <!-- <a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a> -->
-                        <span v-if="item.hit >= 25"><a href="javascript:;" @click="fnView(item.bbsNum)"
-                                style="color: red;">{{item.title}}</a></span>
-                        <span v-else><a href="javascript:;" @click="fnView(item.bbsNum)">{{item.title}}</a></span>
+                        <span v-if="item.hit >= 25">
+                            <a href="javascript:;" @click="fnView(item.bbsNum)"
+                                style="color: red;">{{item.title}}</a>
+                        </span>
+                        <span v-else>
+                            <a href="javascript:;" @click="fnView(item.bbsNum)">{{item.title}}</a>
+                        </span>
                     </td>
                     <td>{{item.hit}}</td>
                     <td>{{item.userId}}</td>
@@ -120,10 +125,10 @@
             </div>
 
             <div>
-                <a href="add.do"><button>글쓰기</button></a>
+                <a href="/bbs/add.do"><button>글쓰기</button></a>
             </div>
             <div>
-                <button @click="fnCkdAllRemove">삭제</button>
+                <button @click="fnRemove">삭제</button>
             </div>
 
 
@@ -140,8 +145,8 @@
                     sessionIdddd: "${sessionId}",
                     status: "${sessionStatus}",
                     list: [],
-                    selectItem: [],
-
+                    // selectItem: [],  //라디오버튼 클릭시 값 들어옴
+                    selectItem: "",  //라디오버튼 클릭시 값 들어옴
 
                     pageSize: 5, // 한페이지에 출력할 개수
                     page: 1, //현재페이지
@@ -157,10 +162,10 @@
                 fnList: function () {
                     let self = this;
                     let param = {
-                        pageSize : self.pageSize,
-                        page : self.page,
-                        index : self.index,
-                        searchOption : self.searchOption,
+                        pageSize: self.pageSize,
+                        page: self.page,
+                        index: self.index,
+                        searchOption: self.searchOption,
                         keyword: self.keyword, //검색어
 
                         page: (self.page - 1) * self.pageSize, //이래야 최신글이 잘보임... 없으면 최신글만 리스트에서 조회 안됨
@@ -173,22 +178,25 @@
                         success: function (data) {
                             // alert("어쩃든 성공" + JSON.stringify(data));
                             // self.list = data.list;
-                            console.log(data);
-                            self.list = data.list;
-                            self.index = Math.ceil(data.cnt / self.pageSize);
+                            if (data.result == "success") {
+                                console.log(data);
+                                self.list = data.list;
+                                self.index = Math.ceil(data.cnt / self.pageSize);
+                            }
+
                         }
                     });
                 },
 
-                fnCkdAllRemove: function () {
+                fnRemove: function () {
                     let self = this;
                     // console.log(self.selectItem);
                     // var fList = JSON.stringify(self.selectItem); //이건 여러게 할떄 떳던것 같음...
-                    var fList = self.selectItem; //한개만 보낼때는 이렇게....
-                    var param = { selectItem: fList }; //서버쪽에 이름을 selectItem로 넘김
+                    let fList = self.selectItem; //한개만 보낼때는 이렇게....
+                    let param = { selectItem: fList }; //서버쪽에 이름을 selectItem로 넘김
 
                     $.ajax({
-                        url: "/bbs/deleteList.dox",
+                        url: "/bbs/remove.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,

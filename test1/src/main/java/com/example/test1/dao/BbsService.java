@@ -20,29 +20,71 @@ public class BbsService {
 	public HashMap<String, Object> getBbsList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		List<Bbs> list = bbsMapper.selectBbsList(map);
-		int cnt = bbsMapper.selectBbsCnt(map);
+		
+		try {
+			
+			List<Bbs> list = bbsMapper.selectBbsList(map);
+			int cnt = bbsMapper.selectBbsCnt(map);
 
-		resultMap.put("list", list);
-		resultMap.put("cnt", cnt);
-//		resultMap.put("result", "success");
+			resultMap.put("list", list);
+			resultMap.put("cnt", cnt);
+			resultMap.put("result", "success");
 
-		System.out.println("BbsService클래스, 프론트에 돌려주기전 resultMap에 머가 들었나~?" + resultMap);
+			System.out.println("BbsService클래스, 프론트에 돌려주기전 resultMap의 내용" + resultMap);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
 
+
+		
+		
 		return resultMap;
 	}
 
 	public HashMap<String, Object> addBbs(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			
+
+		
 		System.out.println("서버로 들어온 데이터 확인 addBoard " + map);
 		int cnt = bbsMapper.insertBbs(map);
 
 		resultMap.put("bbsNum", map.get("bbsNum"));
 		resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
 		return resultMap;
 
 	}
+	
+	public HashMap<String, Object> removeBbs(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			System.out.println("서비스에서의 map " + map);
+			int cnt = bbsMapper.deleteBbsList(map);
+
+			resultMap.put("cnt", cnt);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+
+
+		return resultMap;
+	}
+	
 
 	public HashMap<String, Object> removeBbsList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
