@@ -73,6 +73,7 @@
     </html>
 
     <script>
+        
         const app = Vue.createApp({
             data() {
                 return {
@@ -107,7 +108,7 @@
                             alert("data.bbsNum는 "+data.bbsNum);
                             self.upload(form);
                             location.href = "/bbs/list.do";
-                            
+
                             } else {
                                 alert("오류가 발생했습니다.");
                             }
