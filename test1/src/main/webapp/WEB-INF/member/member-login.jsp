@@ -46,6 +46,9 @@
                     <a href="/member/join.do"><button>회원가입</button></a>
                     <a href="/member/pwd.do"><button>비밀번호 찾기</button></a>
                 </div>
+                <a :href="location">
+                    <img src="/img/kakao.png">
+                </a>
             </div>
         </div><!--app 끝-->
     </body>
@@ -58,7 +61,8 @@
                 return {
                     // 변수 - (key : value)
                     id: "",
-                    pwd: ""
+                    pwd: "",
+                    location : "${location}",
                 };
             },
             methods: {
@@ -79,7 +83,7 @@
                             // alert(data.msg);
                             alert(JSON.stringify(data));
                             if (data.result == "success") {
-                                
+
                                 location.href = "/main.do";
                                 location.href = data.url;
                             }
@@ -89,9 +93,9 @@
 
 
                 // pwHelp() {
-                    // let p = self.pwd;
-                    // let ok =  /[A-Za-z]/.test(p) && /\d/.test(p); //p.length >= 8 &&
-                    // return ok ? "안전한 비밀번호입니다." : "8자 이상 & 숫자/문자 조합 권장";
+                // let p = self.pwd;
+                // let ok =  /[A-Za-z]/.test(p) && /\d/.test(p); //p.length >= 8 &&
+                // return ok ? "안전한 비밀번호입니다." : "8자 이상 & 숫자/문자 조합 권장";
                 // },
 
             }, // methods
