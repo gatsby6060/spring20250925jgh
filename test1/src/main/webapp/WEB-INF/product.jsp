@@ -61,11 +61,21 @@
 
             </section>
         </main>
-    <!-- <div id="google_translate_element"></div> -->
+    <div id="google_translate_element"></div>
     </div>
 </body>
 </html>
 <script>
+    // 1. Google 번역 위젯 초기화를 위한 전역 콜백 함수 정의
+    // 이 함수는 Google 스크립트 로드가 완료된 후에만 실행됩니다.
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {pageLanguage: 'ko', autoDisplay: false}, 
+            'google_translate_element'
+        );
+    }
+
+    
     const app = Vue.createApp({
         data() {
             return {
@@ -101,7 +111,7 @@
         mounted() {
             var self = this;
             self.fnList('', '');
-            // new google.translate.TranslateElement({pageLanguage: 'ko',autoDisplay: false}, 'google_translate_element');
+            //new google.translate.TranslateElement({pageLanguage: 'ko',autoDisplay: false}, 'google_translate_element');
         }
     });
     app.mount('#app');
