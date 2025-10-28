@@ -11,6 +11,8 @@ import com.example.test1.dao.GeminiService;
 
 import lombok.RequiredArgsConstructor;
 
+
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/gemini")
