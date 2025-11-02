@@ -12,4 +12,10 @@ public class MainController {
 
 		return "/main/home"; 
 	}
+	
+	@RequestMapping("/chat.do")
+	public String chat(Model model) throws Exception {
+
+		return "/chat"; 
+	}
 }

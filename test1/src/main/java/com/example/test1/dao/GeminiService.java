@@ -43,6 +43,7 @@ public class GeminiService {
         return message;
     }
     */
+    
     public String getContents(String prompt) {
 
         // Gemini에 요청 전송
